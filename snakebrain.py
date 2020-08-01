@@ -15,6 +15,17 @@ def get_next(current_head, next_move):
 
     return future_head
 
+def get_safe_moves(possible_moves, body, board):
+
+    safe_moves = []
+
+    for guess in possible_moves:
+        guess_coord = get_next(body[0], guess)
+        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]):
+            safe_moves.append(guess)
+
+    return safe_moves
+
 def avoid_walls(future_head, board_width, board_height):
     result = True
 

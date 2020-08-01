@@ -19,10 +19,10 @@ class Battlesnake(object):
         # TIP: If you open your Battlesnake URL in browser you should see this data
         return {
             "apiversion": "1",
-            "author": "altersaddle",  # TODO: Your Battlesnake Username
-            "color": "#112233",  # TODO: Personalize
-            "head": "default",  # TODO: Personalize
-            "tail": "default",  # TODO: Personalize
+            "author": "altersaddle",  
+            "color": "#306448",  # TODO: create function to generate
+            "head": "tongue",  # TODO: Personalize
+            "tail": "sharp",  # TODO: Personalize
         }
 
     @cherrypy.expose
@@ -48,20 +48,16 @@ class Battlesnake(object):
         body = data["you"]["body"]
         snakes = data["board"]["snakes"]
 
-        # Choose a random direction to move in
+        # Choose a direction to move in
         possible_moves = ["up", "down", "left", "right"]
-        smart_moves = []
 
-        for guess in possible_moves:
-            guess_coord = snakebrain.get_next(body[0], guess)
-            if snakebrain.avoid_walls(guess_coord, data["board"]["width"], data["board"]["height"]) and snakebrain.avoid_snakes(guess_coord, snakes):
-                smart_moves.append(guess)
-            
+        safe_moves = snakebrain.get_safe_moves(possible_moves, body, board)
+
         move = random.choice(possible_moves)
 
-        if smart_moves:
-            print (f"Smart! {smart_moves}")
-            move = random.choice(smart_moves)
+        if safe_moves:
+            print (f"Safe! {safe_moves}")
+            move = random.choice(safe_moves)
 
         print(f"MOVE: {move}")
         return {"move": move}
