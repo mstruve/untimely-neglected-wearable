@@ -1,4 +1,4 @@
-MOVE_LOOKUP = {"left":-1, "right": 1, "up": -1, "down":1}
+MOVE_LOOKUP = {"left":-1, "right": 1, "up": 1, "down":-1}
 
 def get_next(current_head, next_move):
     """
