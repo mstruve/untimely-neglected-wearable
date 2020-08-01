@@ -7,7 +7,7 @@ def get_next(current_head, next_move):
     # Copy first
     future_head = current_head.copy()
 
-    if next_move in ["left, right"]:
+    if next_move in ["left", "right"]:
         # X-axis
         future_head["x"] = current_head["x"] + MOVE_LOOKUP[next_move]
     elif next_move in ["up", "down"]:
