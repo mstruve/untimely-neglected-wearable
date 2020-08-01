@@ -1,5 +1,6 @@
 import os
 import random
+import snakebrain
 
 import cherrypy
 
@@ -44,11 +45,24 @@ class Battlesnake(object):
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
 
+        body = data["you"]["body"]
+        snakes = data["board"]["snakes"]
+
         # Choose a random direction to move in
         possible_moves = ["up", "down", "left", "right"]
+        smart_moves = []
+
+        for guess in possible_moves:
+            guess_coord = snakebrain.get_next(body[0], guess)
+            if snakebrain.avoid_walls(guess_coord, data["board"]["width"], data["board"]["height"]) and snakebrain.avoid_snakes(guess_coord, snakes):
+                smart_moves.append(guess)
+            
         move = random.choice(possible_moves)
 
-        print(f"MOVE: {move}")
+        if smart_moves:
+            move = random.choice(smart_moves)
+
+        print("MOVE: {move}")
         return {"move": move}
 
     @cherrypy.expose
