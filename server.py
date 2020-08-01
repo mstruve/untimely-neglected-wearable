@@ -51,7 +51,7 @@ class Battlesnake(object):
         # Choose a direction to move in
         possible_moves = ["up", "down", "left", "right"]
 
-        safe_moves = snakebrain.get_safe_moves(possible_moves, body, board)
+        safe_moves = snakebrain.get_safe_moves(possible_moves, body, data["board"])
 
         move = random.choice(possible_moves)
 
