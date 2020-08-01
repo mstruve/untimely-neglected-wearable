@@ -60,7 +60,7 @@ def avoid_trap(possible_moves, body, board):
                 safe_coords[guess].append(get_next(guess_coord, safe_move))
 
     for path in safe_coords.keys():
-        if safe_coords[path].len() >= body.len():
+        if len(safe_coords[path]) >= len(body):
             smart_moves.append(path)
 
     return smart_moves
