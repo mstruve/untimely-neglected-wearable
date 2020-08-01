@@ -60,10 +60,10 @@ class Battlesnake(object):
         move = random.choice(possible_moves)
 
         if smart_moves:
-            print ("Smart! {smart_moves}")
+            print (f"Smart! {smart_moves}")
             move = random.choice(smart_moves)
 
-        print("MOVE: {move}")
+        print(f"MOVE: {move}")
         return {"move": move}
 
     @cherrypy.expose
