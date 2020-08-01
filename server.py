@@ -60,6 +60,7 @@ class Battlesnake(object):
         move = random.choice(possible_moves)
 
         if smart_moves:
+            print ("Smart! {smart_moves}")
             move = random.choice(smart_moves)
 
         print("MOVE: {move}")
