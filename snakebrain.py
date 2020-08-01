@@ -63,5 +63,8 @@ def avoid_trap(possible_moves, body, board):
         if len(safe_coords[path]) >= len(body):
             smart_moves.append(path)
 
+    print(f"Safe Coords: {safe_coords}")
+    print(f"Are we smart? {smart_moves}")
+
     return smart_moves
 

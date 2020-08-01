@@ -52,7 +52,7 @@ class Battlesnake(object):
         possible_moves = ["up", "down", "left", "right"]
 
         safe_moves = snakebrain.get_safe_moves(possible_moves, body, data["board"])
-        smart_moves = snakebrain.avoid_trap(possible_moves, body, data["board"])
+        smart_moves = snakebrain.avoid_trap(possible_moves, body, data["board"]
     
         move = random.choice(possible_moves)
 
