@@ -43,3 +43,25 @@ def avoid_snakes(future_head, snake_bodies):
             return False
     return True
 
+def avoid_trap(possible_moves, body, board):
+    # make sure the chosen diretion has an escape route
+    # is the path leading into an enclosed space smaller than us?
+    smart_moves = []
+    safe_moves = get_safe_moves(possible_moves, body, board)
+    safe_coords = {}
+
+    # We know these directions are safe... for now
+    for guess in safe_moves:
+        safe_coords[guess] = []
+        guess_coord = get_next(body[0], guess)
+        safe = get_safe_moves(possible_moves, [guess_coord], board)
+        for safe_move in safe:
+            if safe_move not in safe_coords[guess]:
+                safe_coords[guess].append(get_next(guess_coord, safe_move))
+
+    for path in safe_coords.keys():
+        if safe_coords[path].len() >= body.len():
+            smart_moves.append(path)
+
+    return smart_moves
+
