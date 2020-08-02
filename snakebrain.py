@@ -58,14 +58,14 @@ def avoid_trap(possible_moves, body, board):
         for segments in body:
             safe = get_safe_moves(possible_moves, [guess_coord], board)
             for safe_move in safe:
-                guess_coord = get_next(guess_coord, safe_move)
-                if guess_coord not in safe_coords[guess]:
-                    safe_coords[guess].append(guess_coord)
+                guess_coord_next = get_next(guess_coord, safe_move)
+                if guess_coord_next not in safe_coords[guess]:
+                    safe_coords[guess].append(guess_coord_next)
 
             for safe_coord in safe_coords[guess]:
                 safe = get_safe_moves(possible_moves, [safe_coord], board)
                 for safe_move in safe:
-                    guess_coord = get_next(guess_coord, safe_move)
+                    guess_coord = get_next(safe_coord, safe_move)
                     if guess_coord not in safe_coords[guess]:
                         safe_coords[guess].append(guess_coord)
 
