@@ -62,7 +62,7 @@ def avoid_trap(possible_moves, body, board):
                 if guess_coord not in safe_coords[guess]:
                     safe_coords[guess].append(guess_coord)
 
-            for safe_coord in safe_coords[guess]
+            for safe_coord in safe_coords[guess]:
                 safe = get_safe_moves(possible_moves, [safe_coord], board)
                 for safe_move in safe:
                     guess_coord = get_next(guess_coord, safe_move)
