@@ -28,7 +28,7 @@ def get_safe_moves(possible_moves, body, board):
 
     for guess in possible_moves:
         guess_coord = get_next(body[0], guess)
-        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]) and avoid_consumption(guess_coord, board["snakes"], board["you"]):
+        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]) 
             safe_moves.append(guess)
         elif guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
@@ -67,7 +67,7 @@ def avoid_consumption(future_head, snake_bodies, my_snake):
             return False
     return True
 
-def avoid_trap(possible_moves, body, board):
+def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
     # is the path leading into an enclosed space smaller than us?
     smart_moves = []
@@ -95,7 +95,8 @@ def avoid_trap(possible_moves, body, board):
 
 
     for path in safe_coords.keys():
-        if len(safe_coords[path]) >= len(body):
+        guess_coord = get_next(body[0], path)
+        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
             smart_moves.append(path)
 
     if not smart_moves:
