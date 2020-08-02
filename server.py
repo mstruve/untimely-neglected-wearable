@@ -85,7 +85,7 @@ class Battlesnake(object):
         self.log("END")
         return "ok"
 
-    def log(message):
+    def log(self, message):
         # output message iwth globals
         print(f"{game_id} [{turn}] {message}")
 
