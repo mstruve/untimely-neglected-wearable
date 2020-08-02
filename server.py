@@ -87,7 +87,7 @@ class Battlesnake(object):
 
     def log(self, message):
         # output message iwth globals
-        print(f"{game_id} [{turn}] {message}")
+        print(f"{self.game_id} [{self.turn}] {message}")
 
 
 if __name__ == "__main__":
