@@ -11,6 +11,9 @@ For instructions see https://github.com/BattlesnakeOfficial/starter-snake-python
 
 
 class Battlesnake(object):
+    game_id = ""
+    turn = -1
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def index(self):
@@ -33,7 +36,10 @@ class Battlesnake(object):
         # TODO: Use this function to decide how your snake is going to look on the board.
         data = cherrypy.request.json
 
-        print("START")
+        turn = data["turn"]
+        game_id = data["game"]["id"]
+
+        log("START")
         return "ok"
 
     @cherrypy.expose
@@ -45,6 +51,8 @@ class Battlesnake(object):
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
 
+        turn = data["turn"]
+        game_id = data["game"]["id"]
         body = data["you"]["body"]
         snakes = data["board"]["snakes"]
 
@@ -57,14 +65,14 @@ class Battlesnake(object):
         move = random.choice(possible_moves)
 
         if safe_moves:
-            print (f"Safe! {safe_moves}")
+            log (f"Safe! {safe_moves}")
             move = random.choice(safe_moves)
 
-        if smart_moves:
-            print (f"Smart! {smart_moves}")
+        elif smart_moves:
+            log (f"Smart! {smart_moves}")
             move = random.choice(smart_moves)
 
-        print(f"MOVE: {move}")
+        log(f"MOVE: {move}")
         return {"move": move}
 
     @cherrypy.expose
@@ -74,8 +82,12 @@ class Battlesnake(object):
         # It's purely for informational purposes, you don't have to make any decisions here.
         data = cherrypy.request.json
 
-        print("END")
+        log("END")
         return "ok"
+
+    def log(message):
+        # output message iwth globals
+        print(f"{game_id} [{turn}] {message}")
 
 
 if __name__ == "__main__":
