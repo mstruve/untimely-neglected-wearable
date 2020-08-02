@@ -39,7 +39,7 @@ class Battlesnake(object):
         turn = data["turn"]
         game_id = data["game"]["id"]
 
-        log("START")
+        self.log("START")
         return "ok"
 
     @cherrypy.expose
@@ -65,14 +65,14 @@ class Battlesnake(object):
         move = random.choice(possible_moves)
 
         if safe_moves:
-            log (f"Safe! {safe_moves}")
+            self.log (f"Safe! {safe_moves}")
             move = random.choice(safe_moves)
 
         elif smart_moves:
-            log (f"Smart! {smart_moves}")
+            self.log (f"Smart! {smart_moves}")
             move = random.choice(smart_moves)
 
-        log(f"MOVE: {move}")
+        self.log(f"MOVE: {move}")
         return {"move": move}
 
     @cherrypy.expose
@@ -82,7 +82,7 @@ class Battlesnake(object):
         # It's purely for informational purposes, you don't have to make any decisions here.
         data = cherrypy.request.json
 
-        log("END")
+        self.log("END")
         return "ok"
 
     def log(message):
