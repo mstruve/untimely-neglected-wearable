@@ -63,7 +63,7 @@ def avoid_consumption(future_head, snake_bodies):
     my_length = my_snake["length"]
     for snake in snake_iterator:
         if future_head in get_all_moves(snake["head"]) and my_length <= snake["length"]:
-            print("DANGER OF EATED")
+            print(f"DANGER OF EATED {future_head} {my_length}")
             return False
     return True
 
