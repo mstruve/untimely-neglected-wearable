@@ -55,6 +55,8 @@ def avoid_snakes(future_head, snake_bodies):
     return True
 
 def avoid_consumption(future_head, snake_bodies):
+    if len(snake_bodies) < 2:
+        return True
     # skip first snake, it's us
     snake_iterator = iter(snake_bodies)
     my_snake = next(snake_iterator, None)
