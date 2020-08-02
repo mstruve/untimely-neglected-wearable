@@ -36,8 +36,8 @@ class Battlesnake(object):
         # TODO: Use this function to decide how your snake is going to look on the board.
         data = cherrypy.request.json
 
-        turn = data["turn"]
-        game_id = data["game"]["id"]
+        self.turn = data["turn"]
+        self.game_id = data["game"]["id"]
 
         self.log("START")
         return "ok"
@@ -51,8 +51,8 @@ class Battlesnake(object):
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
 
-        turn = data["turn"]
-        game_id = data["game"]["id"]
+        self.turn = data["turn"]
+        self.game_id = data["game"]["id"]
         body = data["you"]["body"]
         snakes = data["board"]["snakes"]
 
