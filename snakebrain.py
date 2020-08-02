@@ -74,6 +74,19 @@ def avoid_trap(possible_moves, body, board):
         if len(safe_coords[path]) >= len(body):
             smart_moves.append(path)
 
+    if not smart_moves:
+        # Uh oh, we're out of good ideas.  What if we try to chase our tail
+        tail_neighbors = []
+        tail_safe = get_safe_moves(possible_moves, [body[-1]], board)
+        for tail_safe_direction in tail_safe:
+            tail_neighbors.append(get_next(body[-1], tail_safe_direction))
+
+        for path in safe_coords.keys():
+            if any(coord in safe_coords[path] for coord in tail_neighbors):
+                print("Chasing tail!!")
+                smart_moves.append(path)
+
+
     print(f"Safe Coords: {safe_coords}")
     print(f"Are we smart? {smart_moves}")
 
