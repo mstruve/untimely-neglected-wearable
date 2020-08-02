@@ -28,7 +28,7 @@ def get_safe_moves(possible_moves, body, board):
 
     for guess in possible_moves:
         guess_coord = get_next(body[0], guess)
-        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]) 
+        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
             safe_moves.append(guess)
         elif guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
