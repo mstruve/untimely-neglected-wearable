@@ -64,13 +64,13 @@ class Battlesnake(object):
     
         move = random.choice(possible_moves)
 
-        if safe_moves:
-            self.log (f"Safe! {safe_moves}")
-            move = random.choice(safe_moves)
-
-        elif smart_moves:
+        if smart_moves:
             self.log (f"Smart! {smart_moves}")
             move = random.choice(smart_moves)
+
+        elif safe_moves:
+            self.log (f"Safe! {safe_moves}")
+            move = random.choice(safe_moves)
 
         self.log(f"MOVE: {move}")
         return {"move": move}
