@@ -16,11 +16,8 @@ def get_next(current_head, next_move):
     return future_head
 
 def get_all_moves(coord):
-    all_moves = []
-    for choice in ["left", "right", "up", "down"]: #yuck, why is this hardcoded here
-        all_moves.append(get_next(coord, choice))
-
-    return all_moves
+    choices = ["left", "right", "up", "down"]
+    return [get_next(coord, choice) for choice in choices]
 
 def get_safe_moves(possible_moves, body, board):
 
