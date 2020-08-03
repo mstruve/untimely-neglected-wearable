@@ -122,7 +122,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         food_choices = smart_moves
         food_moves = {}
 
-        if snake["health"] < 25:
+        if my_snake["health"] < 25:
             # getting very hungry, stop looking only in smart directions
             print("Making poor choices")
             smart_moves.clear()
