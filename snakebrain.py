@@ -112,6 +112,14 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 smart_moves.append(path)
 
 
+    # Seek food if there are other snakes larger than us, or if health is low
+    if my_snake["health"] < 25 or any(snake["length"] > my_snake["length"] for snake in board["snakes"]):
+        print("Hungry!")
+        for path in safe_coords.keys():
+            if any(food in safe_coords[path] for food in board["food"]):
+                print(f"food is {path}")
+                smart_moves.append(path)
+
     #print(f"Safe Coords: {safe_coords}")
     #print(f"Are we smart? {smart_moves}")
 
