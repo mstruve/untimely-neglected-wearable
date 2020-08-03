@@ -125,7 +125,6 @@ def avoid_trap(possible_moves, body, board, my_snake):
         food_moves = {}
         for path in safe_coords.keys():
             if any(food in safe_coords[path] for food in board["food"]):
-                print(f"food is {path}")
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
 
         if food_moves:
@@ -134,6 +133,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             closest_food_distance = min(food_moves.values())
             for path in food_moves.keys():
                 if food_moves[path] <= closest_food_distance:
+                    print(f"food towards {path} is {closest_food_distance} or less")
                     smart_moves.append(path)
             
 
