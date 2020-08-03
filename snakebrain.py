@@ -67,6 +67,13 @@ def avoid_consumption(future_head, snake_bodies, my_snake):
             return False
     return True
 
+def get_minimum_moves(start_coord, targets):
+    # This could probably be a lambda but I'm nto that smart
+    steps = []
+    for coord in targets:
+        steps.append(abs(coord["x"] - start_coord["x"]) + abs(coord["y"] - start_coord["y"]))
+    return min(steps)
+
 def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
     # is the path leading into an enclosed space smaller than us?
@@ -115,10 +122,20 @@ def avoid_trap(possible_moves, body, board, my_snake):
     # Seek food if there are other snakes larger than us, or if health is low
     if my_snake["health"] < 25 or any(snake["length"] > my_snake["length"] for snake in board["snakes"]):
         print("Hungry!")
+        food_moves = {}
         for path in safe_coords.keys():
             if any(food in safe_coords[path] for food in board["food"]):
                 print(f"food is {path}")
-                smart_moves.append(path)
+                food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
+
+        if food_moves:
+            smart_moves.clear()
+            closest_food_distance = min(food_moves.items)
+            for path in food_moves.keys():
+                if food_moves[path] <= closest_food_distance:
+                    print(f"going {closest_food_distance} steps for food, {path}")
+                    smart_moves.append(path)
+            
 
     #print(f"Safe Coords: {safe_coords}")
     #print(f"Are we smart? {smart_moves}")
