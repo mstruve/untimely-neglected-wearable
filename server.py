@@ -1,5 +1,7 @@
 import os
 import random
+import time
+
 import snakebrain
 
 import cherrypy
@@ -49,7 +51,9 @@ class Battlesnake(object):
         # This function is called on every turn of a game. It's how your snake decides where to move.
         # Valid moves are "up", "down", "left", or "right".
         # TODO: Use the information in cherrypy.request.json to decide your next move.
+        begin_time = time.perf_counter()
         data = cherrypy.request.json
+        parse_time = time.perf_counte() - begin_time
 
         self.turn = data["turn"]
         self.game_id = data["game"]["id"]
@@ -60,7 +64,9 @@ class Battlesnake(object):
         possible_moves = ["up", "down", "left", "right"]
 
         safe_moves = snakebrain.get_safe_moves(possible_moves, body, data["board"])
+        safe_time = time.perf_counter() - begin_time
         smart_moves = snakebrain.avoid_trap(safe_moves, body, data["board"], data["you"])
+        smart_time = time.perf_counter() - begin_time
     
         move = random.choice(possible_moves)
 
@@ -72,7 +78,8 @@ class Battlesnake(object):
             self.log (f"Safe! {safe_moves}")
             move = random.choice(safe_moves)
 
-        self.log(f"MOVE: {move}")
+        total_time = time.perf_counter() - begin_time
+        self.log(f"MOVE: {move} parse_time {parse_time} safe_time {safe_time} smart_time {smart_time} total_time {total_time}")
         return {"move": move}
 
     @cherrypy.expose
