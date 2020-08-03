@@ -53,7 +53,7 @@ class Battlesnake(object):
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         begin_time = time.perf_counter()
         data = cherrypy.request.json
-        parse_time = time.perf_counte() - begin_time
+        parse_time = time.perf_counter() - begin_time
 
         self.turn = data["turn"]
         self.game_id = data["game"]["id"]
