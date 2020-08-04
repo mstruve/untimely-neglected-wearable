@@ -115,16 +115,20 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 print("Chasing tail!!")
                 smart_moves.append(path)
 
+    hunger_threshold = 25
 
+    if board["hazards"]:
+        hunger_threshold = 45
+    
     # Seek food if there are other snakes larger than us, or if health is low
-    if my_snake["health"] < 25 or any(snake["length"] > my_snake["length"] for snake in board["snakes"]):
+    if my_snake["health"] < hunger_threshold or any(snake["length"] > my_snake["length"] for snake in board["snakes"]):
         print("Hungry!")
         food_choices = smart_moves
         food_moves = {}
 
-        if my_snake["health"] < 25:
+        if my_snake["health"] < hunger_threshold:
             # getting very hungry, stop looking only in smart directions
-            print("Making poor choices")
+            print(f"Making poor choices due to health below {hunger_threshold}")
             smart_moves.clear()
             food_choices = safe_coords.keys()
 
