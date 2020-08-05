@@ -72,6 +72,9 @@ def get_minimum_moves(start_coord, targets):
     return min(steps)
 
 def get_closest_enemy(head_coord, snakes):
+    if len(snakes) == 1:
+        # so alone
+        return -1
     steps = []
     for snake in snakes:
         if snake["head"] == head_coord:
