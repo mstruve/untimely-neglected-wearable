@@ -71,6 +71,15 @@ def get_minimum_moves(start_coord, targets):
         steps.append(abs(coord["x"] - start_coord["x"]) + abs(coord["y"] - start_coord["y"]))
     return min(steps)
 
+def get_closest_enemy(head_coord, snakes):
+    steps = []
+    for snake in snakes:
+        if snake["head"] == head_coord:
+            continue
+        for body in snake["body"]:
+            steps.append(abs(body["x"] - head_coord["x"]) + abs(body["y"] - head_coord["y"]))
+    return min(steps)
+
 def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
     # is the path leading into an enclosed space smaller than us?
@@ -123,14 +132,14 @@ def avoid_trap(possible_moves, body, board, my_snake):
         hunger_threshold = 45
     
     # Seek food if there are other snakes larger than us, or if health is low
-    if my_snake["health"] < hunger_threshold or any(snake["length"] > my_snake["length"] for snake in board["snakes"]):
+    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"]):
         print("Hungry!")
         food_choices = smart_moves
         food_moves = {}
 
-        if my_snake["health"] < hunger_threshold:
+        if my_snake["health"] < hunger_threshold or get_minimum_moves(my_snake["head"], board["food"]) < get_closest_enemy(my_snake["head"], board["snakes"]):
             # getting very hungry, stop looking only in smart directions
-            print(f"Making poor choices due to health below {hunger_threshold}")
+            print(f'Health: {my_snake["health"]} below {hunger_threshold}?')
             smart_moves.clear()
             food_choices = safe_coords.keys()
 
