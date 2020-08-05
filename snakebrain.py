@@ -75,6 +75,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
     # is the path leading into an enclosed space smaller than us?
     smart_moves = []
+    all_moves = ["up", "down", "left", "right"]
     safe_moves = get_safe_moves(possible_moves, body, board)
     safe_coords = {}
 
@@ -84,7 +85,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         guess_coord = get_next(body[0], guess)
 
         for segments in body:
-            safe = get_safe_moves(possible_moves, [guess_coord], board)
+            safe = get_safe_moves(all_moves, [guess_coord], board)
             for safe_move in safe:
                 guess_coord_next = get_next(guess_coord, safe_move)
                 if guess_coord_next not in safe_coords[guess]:
@@ -99,6 +100,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
 
     for path in safe_coords.keys():
+#        print (f"safe {path} coords: {safe_coords[path]}")
         guess_coord = get_next(body[0], path)
         if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
             smart_moves.append(path)
