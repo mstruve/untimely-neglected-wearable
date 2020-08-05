@@ -1,0 +1,225 @@
+{
+    "game": {
+        "id": "Test",
+        "timeout": 500
+    },
+    "turn": 36,
+    "you": {
+        "id": "gs_F3rS4hfTg8jH7MX48YTmdDQC",
+        "name": "Untimely Neglected Wearable",
+        "health": 92,
+        "body": [
+            {
+                "x": 1,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 4
+            },
+            {
+                "x": 3,
+                "y": 4
+            },
+            {
+                "x": 3,
+                "y": 3
+            },
+            {
+                "x": 3,
+                "y": 2
+            },
+            {
+                "x": 3,
+                "y": 1
+            },
+            {
+                "x": 4,
+                "y": 1
+            }
+        ],
+        "shout": "",
+        "length": 8,
+        "head": {
+            "x": 1,
+            "y": 3
+        }
+    },
+    "board": {
+        "snakes": [
+            {
+                "id": "gs_JY3tMxxcSSYgMbk3m9bJMC4Y",
+                "name": "snakeify",
+                "health": 64,
+                "body": [
+                    {
+                        "x": 3,
+                        "y": 5
+                    },
+                    {
+                        "x": 3,
+                        "y": 6
+                    },
+                    {
+                        "x": 3,
+                        "y": 7
+                    }
+                ],
+                "shout": "I am snek",
+                "length": 3,
+                "head": {
+                    "x": 3,
+                    "y": 5
+                }
+            },
+            {
+                "id": "gs_mM44Tw74WRGJp3vtrTp6pky8",
+                "name": "Lil Battlesnake",
+                "health": 74,
+                "body": [
+                    {
+                        "x": 1,
+                        "y": 5
+                    },
+                    {
+                        "x": 0,
+                        "y": 5
+                    },
+                    {
+                        "x": 0,
+                        "y": 4
+                    },
+                    {
+                        "x": 0,
+                        "y": 3
+                    },
+                    {
+                        "x": 0,
+                        "y": 2
+                    }
+                ],
+                "shout": "",
+                "length": 5,
+                "head": {
+                    "x": 1,
+                    "y": 5
+                }
+            },
+            {
+                "id": "gs_GGyV83XQJTSdcw6prRg9YttJ",
+                "name": "Fang Galore",
+                "health": 97,
+                "body": [
+                    {
+                        "x": 9,
+                        "y": 5
+                    },
+                    {
+                        "x": 8,
+                        "y": 5
+                    },
+                    {
+                        "x": 8,
+                        "y": 6
+                    },
+                    {
+                        "x": 7,
+                        "y": 6
+                    },
+                    {
+                        "x": 7,
+                        "y": 5
+                    },
+                    {
+                        "x": 7,
+                        "y": 4
+                    },
+                    {
+                        "x": 8,
+                        "y": 4
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 9,
+                    "y": 5
+                }
+            },
+            {
+                "id": "gs_F3rS4hfTg8jH7MX48YTmdDQC",
+                "name": "Untimely Neglected Wearable",
+                "health": 92,
+                "body": [
+                    {
+                        "x": 1,
+                        "y": 3
+                    },
+                    {
+                        "x": 2,
+                        "y": 3
+                    },
+                    {
+                        "x": 2,
+                        "y": 4
+                    },
+                    {
+                        "x": 3,
+                        "y": 4
+                    },
+                    {
+                        "x": 3,
+                        "y": 3
+                    },
+                    {
+                        "x": 3,
+                        "y": 2
+                    },
+                    {
+                        "x": 3,
+                        "y": 1
+                    },
+                    {
+                        "x": 4,
+                        "y": 1
+                    }
+                ],
+                "shout": "",
+                "length": 8,
+                "head": {
+                    "x": 1,
+                    "y": 3
+                }
+            }
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 10,
+                "y": 10
+            },
+            {
+                "x": 6,
+                "y": 10
+            },
+            {
+                "x": 3,
+                "y": 10
+            },
+            {
+                "x": 0,
+                "y": 6
+            },
+            {
+                "x": 9,
+                "y": 6
+            }
+        ],
+        "hazards": []
+    }
+}

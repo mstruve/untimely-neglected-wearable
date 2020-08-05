@@ -96,7 +96,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         safe_coords[guess] = []
         guess_coord = get_next(body[0], guess)
 
-        for segments in body:
+        for segments in body[:-1]:
             safe = get_safe_moves(all_moves, [guess_coord], board)
             for safe_move in safe:
                 guess_coord_next = get_next(guess_coord, safe_move)
@@ -104,7 +104,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
                     safe_coords[guess].append(guess_coord_next)
 
             for safe_coord in safe_coords[guess]:
-                safe = get_safe_moves(possible_moves, [safe_coord], board)
+                safe = get_safe_moves(all_moves, [safe_coord], board)
                 for safe_move in safe:
                     guess_coord = get_next(safe_coord, safe_move)
                     if guess_coord not in safe_coords[guess]:
