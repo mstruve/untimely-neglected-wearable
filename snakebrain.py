@@ -93,26 +93,32 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
     # We know these directions are safe... for now
     for guess in safe_moves:
+#        print(f"exploring {guess}")
         safe_coords[guess] = []
         guess_coord = get_next(body[0], guess)
+        explore_edge = [guess_coord]
+        all_coords = [guess_coord]
+        next_explore = []
 
         for segments in body[:-1]:
-            safe = get_safe_moves(all_moves, [guess_coord], board)
-            for safe_move in safe:
-                guess_coord_next = get_next(guess_coord, safe_move)
-                if guess_coord_next not in safe_coords[guess]:
-                    safe_coords[guess].append(guess_coord_next)
-
-            for safe_coord in safe_coords[guess]:
-                safe = get_safe_moves(all_moves, [safe_coord], board)
+            next_explore.clear()
+            for explore in explore_edge:
+                safe = get_safe_moves(all_moves, [explore], board)
+                #print(f"Safe moves: {safe}")
                 for safe_move in safe:
-                    guess_coord = get_next(safe_coord, safe_move)
-                    if guess_coord not in safe_coords[guess]:
-                        safe_coords[guess].append(guess_coord)
+                    guess_coord_next = get_next(explore, safe_move)
+                    if guess_coord_next not in all_coords:
+                        next_explore.append(guess_coord_next)
 
+                all_coords += next_explore.copy() 
+                all_coords.append(explore)
+            explore_edge = next_explore.copy()
+
+        #print(f"{all_coords}")
+        safe_coords[guess] += list(map(dict, frozenset(frozenset(i.items()) for i in all_coords)))
 
     for path in safe_coords.keys():
-#        print (f"safe {path} coords: {safe_coords[path]}")
+        #print (f"safe {path} coords: {safe_coords[path]}")
         guess_coord = get_next(body[0], path)
         if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
             smart_moves.append(path)

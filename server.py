@@ -5,6 +5,7 @@ import time
 import snakebrain
 
 import cherrypy
+#import cProfile
 
 """
 This is a simple Battlesnake server written in Python.
@@ -50,7 +51,6 @@ class Battlesnake(object):
     def move(self):
         # This function is called on every turn of a game. It's how your snake decides where to move.
         # Valid moves are "up", "down", "left", or "right".
-        # TODO: Use the information in cherrypy.request.json to decide your next move.
         begin_time = time.perf_counter()
         data = cherrypy.request.json
         parse_time = time.perf_counter() - begin_time
@@ -65,7 +65,11 @@ class Battlesnake(object):
 
         safe_moves = snakebrain.get_safe_moves(possible_moves, body, data["board"])
         safe_time = time.perf_counter() - begin_time
+        #pr = cProfile.Profile()
+        #pr.enable()
         smart_moves = snakebrain.avoid_trap(safe_moves, body, data["board"], data["you"])
+        #pr.disable()
+        #pr.print_stats()
         smart_time = time.perf_counter() - begin_time
     
         move = random.choice(possible_moves)

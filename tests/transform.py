@@ -8,9 +8,9 @@ with open('./boardstate.json') as f:
 
 move = {}
 board = {}
-boardsize = 11
+boardsize = 19
 
-move["game"] = {"id":"Test", "timeout": 500}
+move["game"] = {"id":"battleroyaleTest", "timeout": 500}
 move["turn"] = boardstate["Turn"]
 board["snakes"] = []
 board["width"] = boardsize
