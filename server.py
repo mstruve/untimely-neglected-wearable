@@ -65,11 +65,11 @@ class Battlesnake(object):
 
         safe_moves = snakebrain.get_safe_moves(possible_moves, body, data["board"])
         safe_time = time.perf_counter() - begin_time
-        #pr = cProfile.Profile()
-        #pr.enable()
+ #       pr = cProfile.Profile()
+ #       pr.enable()
         smart_moves = snakebrain.avoid_trap(safe_moves, body, data["board"], data["you"])
-        #pr.disable()
-        #pr.print_stats()
+ #       pr.disable()
+ #       pr.print_stats()
         smart_time = time.perf_counter() - begin_time
     
         move = random.choice(possible_moves)

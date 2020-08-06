@@ -8,7 +8,10 @@ with open('./boardstate.json') as f:
 
 move = {}
 board = {}
-boardsize = 19
+boardsize = 11
+
+if len(boardstate["Hazards"]) > 0:
+    boardsize = 19
 
 move["game"] = {"id":"battleroyaleTest", "timeout": 500}
 move["turn"] = boardstate["Turn"]
@@ -18,6 +21,8 @@ board["height"] = boardsize
 
 for Snake in boardstate["Snakes"]:
     new_snake = {}
+    if Snake["Death"]:
+        continue
     new_snake["id"] = Snake["ID"]
     new_snake["name"] = Snake["Name"]
     new_snake["health"] = Snake["Health"]

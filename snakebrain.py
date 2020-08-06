@@ -93,7 +93,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
     # We know these directions are safe... for now
     for guess in safe_moves:
-#        print(f"exploring {guess}")
+        #print(f"exploring {guess}")
         safe_coords[guess] = []
         guess_coord = get_next(body[0], guess)
         explore_edge = [guess_coord]
@@ -141,7 +141,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         hunger_threshold = 45
     
     # Seek food if there are other snakes larger than us, or if health is low
-    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"]):
+    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"] if snake["id"] != my_snake["id"]):
         print("Hungry!")
         food_choices = smart_moves
         food_moves = {}
