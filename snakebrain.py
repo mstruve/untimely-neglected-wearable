@@ -123,15 +123,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
         if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
             smart_moves.append(path)
     
-    # No clear path, try to fit ourselves in the longest one
     if not smart_moves:
-        squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
-        if len(safe_coords[squeeze_move]) > 3 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
-            print(f'squeezing into {squeeze_move}')
-            smart_moves.append(squeeze_move)
-
-    if not smart_moves:
-        # Uh oh, we're out of good ideas.  What if we try to chase our tail
+        # What if we try to chase our tail
         tail_neighbors = []
         tail_safe = get_safe_moves(possible_moves, [body[-1]], board)
         for tail_safe_direction in tail_safe:
@@ -141,6 +134,14 @@ def avoid_trap(possible_moves, body, board, my_snake):
             if any(coord in safe_coords[path] for coord in tail_neighbors):
                 print("Chasing tail!!")
                 smart_moves.append(path)
+
+    # No clear path, try to fit ourselves in the longest one
+    if safe_coords and not smart_moves:
+        squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
+        if len(safe_coords[squeeze_move]) > 3 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
+            print(f'squeezing into {squeeze_move}')
+            smart_moves.append(squeeze_move)
+
 
     hunger_threshold = 25
 
