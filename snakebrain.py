@@ -138,7 +138,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves:
         squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
-        if len(safe_coords[squeeze_move]) > 3 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
+        if len(safe_coords[squeeze_move]) > 2 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
             print(f'squeezing into {squeeze_move}')
             smart_moves.append(squeeze_move)
 
@@ -174,11 +174,12 @@ def avoid_trap(possible_moves, body, board, my_snake):
         elif board["food"]:
             for path in food_choices:
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
-            closest_food_distance = min(food_moves.values())
-            for path in food_moves.keys():
-                if food_moves[path] <= closest_food_distance:
-                    print(f"unsafe food towards {path} is {closest_food_distance} or less")
-                    smart_moves.append(path)
+            if food_moves:
+                closest_food_distance = min(food_moves.values())
+                for path in food_moves.keys():
+                    if food_moves[path] <= closest_food_distance:
+                        print(f"unsafe food towards {path} is {closest_food_distance} or less")
+                        smart_moves.append(path)
             
     return smart_moves
 
