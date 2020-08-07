@@ -159,6 +159,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             print(f'Health: {my_snake["health"]} below {hunger_threshold}?')
             smart_moves.clear()
             food_choices = safe_coords.keys()
+            print(f'Looking for food in {food_choices}')
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in board["food"]):
@@ -168,11 +169,16 @@ def avoid_trap(possible_moves, body, board, my_snake):
             closest_food_distance = min(food_moves.values())
             for path in food_moves.keys():
                 if food_moves[path] <= closest_food_distance:
-                    print(f"food towards {path} is {closest_food_distance} or less")
+                    print(f"safe food towards {path} is {closest_food_distance} or less")
+                    smart_moves.append(path)
+        elif board["food"]:
+            for path in food_choices:
+                food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
+            closest_food_distance = min(food_moves.values())
+            for path in food_moves.keys():
+                if food_moves[path] <= closest_food_distance:
+                    print(f"unsafe food towards {path} is {closest_food_distance} or less")
                     smart_moves.append(path)
             
-    #print(f"Safe Coords: {safe_coords}")
-    #print(f"Are we smart? {smart_moves}")
-
     return smart_moves
 
