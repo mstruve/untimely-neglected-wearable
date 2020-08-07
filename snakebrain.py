@@ -122,6 +122,13 @@ def avoid_trap(possible_moves, body, board, my_snake):
         guess_coord = get_next(body[0], path)
         if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
             smart_moves.append(path)
+    
+    # No clear path, try to fit ourselves in the longest one
+    if not smart_moves:
+        squeeze_move = max(smart_moves, key= lambda x: len(smart_moves[x]))
+        if avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
+            print(f'squeezing into {squeeze_move}')
+            smart_moves.append(squeeze_move)
 
     if not smart_moves:
         # Uh oh, we're out of good ideas.  What if we try to chase our tail
