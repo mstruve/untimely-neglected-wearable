@@ -125,8 +125,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
     
     # No clear path, try to fit ourselves in the longest one
     if not smart_moves:
-        squeeze_move = max(smart_moves, key= lambda x: len(smart_moves[x]))
-        if avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
+        squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
+        if len(safe_coords[squeeze_move]) > 3 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
             print(f'squeezing into {squeeze_move}')
             smart_moves.append(squeeze_move)
 
