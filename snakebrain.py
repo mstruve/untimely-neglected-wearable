@@ -180,8 +180,10 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 print("Blinded by hunger")
                 smart_moves = closest_food
             else:
-                smart_moves = [move for move in smart_moves if move in closest_food] 
-                print(f'Smart food is {smart_moves}')
+                food_intersect = [move for move in smart_moves if move in closest_food] 
+                print(f'Smart food is {food_intersect}')
+                if food_intersect:
+                    smart_moves = food_intersect
 
     return smart_moves
 

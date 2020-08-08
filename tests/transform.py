@@ -3,13 +3,14 @@ import json
 def to_new_api(old, dimension):
     return {"x":old["X"], "y": (dimension - 1) - old["Y"]}
 
-with open('./boardstate.json') as f:
+with open('./boardstate.raw') as f:
     boardstate = json.load(f)
 
 move = {}
 board = {}
 boardsize = 11
 
+# TODO: make this an argument
 if len(boardstate["Hazards"]) > 0:
     boardsize = 19
 
