@@ -151,15 +151,9 @@ def avoid_trap(possible_moves, body, board, my_snake):
     # Seek food if there are other snakes larger than us, or if health is low
     if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"] if snake["id"] != my_snake["id"]):
         print("Hungry!")
-        food_choices = smart_moves
+        food_choices = safe_coords.keys() 
         food_moves = {}
-
-        if my_snake["health"] < hunger_threshold or get_minimum_moves(my_snake["head"], board["food"]) < get_closest_enemy(my_snake["head"], board["snakes"]):
-            # getting very hungry, stop looking only in smart directions
-            print(f'Health: {my_snake["health"]} below {hunger_threshold}?')
-            smart_moves.clear()
-            food_choices = safe_coords.keys()
-            print(f'Looking for food in {food_choices}')
+        closest_food = []
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in board["food"]):
@@ -170,7 +164,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             for path in food_moves.keys():
                 if food_moves[path] <= closest_food_distance:
                     print(f"safe food towards {path} is {closest_food_distance} or less")
-                    smart_moves.append(path)
+                    closest_food.append(path)
         elif board["food"]:
             for path in food_choices:
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
@@ -179,7 +173,15 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 for path in food_moves.keys():
                     if food_moves[path] <= closest_food_distance:
                         print(f"unsafe food towards {path} is {closest_food_distance} or less")
-                        smart_moves.append(path)
-            
+                        closest_food.append(path)
+        
+        if closest_food:
+            if my_snake["health"] < hunger_threshold:
+                print("Blinded by hunger")
+                smart_moves = closest_food
+            else:
+                smart_moves = [move for move in smart_moves if move in closest_food] 
+                print(f'Smart food is {smart_moves}')
+
     return smart_moves
 
