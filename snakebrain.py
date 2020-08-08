@@ -25,7 +25,7 @@ def get_safe_moves(possible_moves, body, board):
 
     for guess in possible_moves:
         guess_coord = get_next(body[0], guess)
-        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
+        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"], board["food"]): 
             safe_moves.append(guess)
         elif guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
@@ -45,9 +45,12 @@ def avoid_walls(future_head, board_width, board_height):
 
     return result
 
-def avoid_snakes(future_head, snake_bodies):
+def avoid_snakes(future_head, snake_bodies, foods):
     for snake in snake_bodies:
-        if future_head in snake["body"]:
+        if future_head in snake["body"][:-1]:
+            return False
+        if future_head == snake["body"][-1] and any (move in foods for move in get_all_moves(snake["body"][0])):
+            # if this snake eats, its tail will not move
             return False
     return True
 
