@@ -139,10 +139,9 @@ def avoid_trap(possible_moves, body, board, my_snake):
         hazard_coords[guess] = [coord for coord in safe_coords[guess] if coord in board["hazards"]]
 
     for path in safe_coords.keys():
-        #print (f"safe {path} coords: {safe_coords[path]}")
         guess_coord = get_next(body[0], path)
-        print(f'This path will cost me {len(hazard_coords[path]) * 16} health, I have {my_snake["health"]}')
-        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and len(hazard_coords[path]) * 16 < my_snake["health"]:
+        #print(f'This path {path} will cost me {len(hazard_coords[path]) * 16} health, I have {my_snake["health"]}')
+        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and avoid_hazards(guess_coord, board["hazards"]):
             smart_moves.append(path)
     
     if not smart_moves:
@@ -154,7 +153,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
         for path in safe_coords.keys():
             if any(coord in safe_coords[path] for coord in tail_neighbors):
-                print("Chasing tail!!")
+                print(f"Chasing tail {path}!")
                 smart_moves.append(path)
 
     # No clear path, try to fit ourselves in the longest one
