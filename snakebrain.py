@@ -154,9 +154,6 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
     hunger_threshold = 25
 
-    if board["hazards"]:
-        hunger_threshold = 45
-    
     # Seek food if there are other snakes larger than us, or if health is low
     if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"] if snake["id"] != my_snake["id"]):
         print("Hungry!")
