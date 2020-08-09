@@ -90,6 +90,18 @@ def get_closest_enemy(head_coord, snakes):
             steps.append(abs(body["x"] - head_coord["x"]) + abs(body["y"] - head_coord["y"]))
     return min(steps)
 
+def steps_to_safety(direction, start, board):
+    # There must be a better way to do this
+    retval = 0
+    next_coord = get_next(start, direction)
+    while next_coord in board["hazards"] and avoid_walls(next_coord, board["width"], board["height"]):
+        next_coord = get_next(next_coord, direction)
+        retval += 1
+    if not avoid_walls(next_coord, board["width"], board["height"]):
+        retval += max([board["width"], board["height"]])
+    return retval
+
+
 def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
     # is the path leading into an enclosed space smaller than us?
@@ -125,8 +137,6 @@ def avoid_trap(possible_moves, body, board, my_snake):
         #print(f"{all_coords}")
         safe_coords[guess] += list(map(dict, frozenset(frozenset(i.items()) for i in all_coords)))
         hazard_coords[guess] = [coord for coord in safe_coords[guess] if coord in board["hazards"]]
-
-    print(f"hazards: {hazard_coords}")
 
     for path in safe_coords.keys():
         #print (f"safe {path} coords: {safe_coords[path]}")
@@ -193,6 +203,13 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 print(f'Smart food is {food_intersect}')
                 if food_intersect:
                     smart_moves = food_intersect
+
+    if board["hazards"] and  len(smart_moves) > 1 and my_snake["head"] in board["hazards"]:
+        # Choose the path that takes us out of hazard
+        shortest_path = min([steps_to_safety(move, my_snake["head"], board) for move in smart_moves])
+        smart_moves = [move for move in smart_moves if steps_to_safety(move, my_snake["head"], board) == shortest_path]
+        print(f'going {shortest_path} moves towards {smart_moves} to escape hazards')
+
 
     return smart_moves
 
