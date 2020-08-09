@@ -126,10 +126,13 @@ def avoid_trap(possible_moves, body, board, my_snake):
         safe_coords[guess] += list(map(dict, frozenset(frozenset(i.items()) for i in all_coords)))
         hazard_coords[guess] = [coord for coord in safe_coords[guess] if coord in board["hazards"]]
 
+    print(f"hazards: {hazard_coords}")
+
     for path in safe_coords.keys():
         #print (f"safe {path} coords: {safe_coords[path]}")
         guess_coord = get_next(body[0], path)
-        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and len(hazard_coords[path]) * 15 < my_snake["health"]:
+        print(f'This path will cost me {len(hazard_coords[path]) * 16} health, I have {my_snake["health"]}')
+        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and len(hazard_coords[path]) * 16 < my_snake["health"]:
             smart_moves.append(path)
     
     if not smart_moves:
