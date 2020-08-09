@@ -67,6 +67,10 @@ def avoid_consumption(future_head, snake_bodies, my_snake):
             return False
     return True
 
+def avoid_hazards(future_head, hazards):
+    # Convenience method
+    return future_head not in hazards
+
 def get_minimum_moves(start_coord, targets):
     # This could probably be a lambda but I'm nto that smart
     steps = []
@@ -93,6 +97,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     all_moves = ["up", "down", "left", "right"]
     safe_moves = get_safe_moves(possible_moves, body, board)
     safe_coords = {}
+    hazard_coords = {}
 
     # We know these directions are safe... for now
     for guess in safe_moves:
@@ -119,11 +124,12 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
         #print(f"{all_coords}")
         safe_coords[guess] += list(map(dict, frozenset(frozenset(i.items()) for i in all_coords)))
+        hazard_coords[guess] = [coord for coord in safe_coords[guess] if coord in board["hazards"]]
 
     for path in safe_coords.keys():
         #print (f"safe {path} coords: {safe_coords[path]}")
         guess_coord = get_next(body[0], path)
-        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake):
+        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and len(hazard_coords[path]) * 15 < my_snake["health"]:
             smart_moves.append(path)
     
     if not smart_moves:
