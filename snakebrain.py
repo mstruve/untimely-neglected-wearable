@@ -150,7 +150,6 @@ def avoid_trap(possible_moves, body, board, my_snake):
         # What if we try to chase our tail
         tail_neighbors = []
         tail_safe = get_safe_moves(all_moves, [body[-1]], board)
-        print(f'{tail_safe}')
         for tail_safe_direction in tail_safe:
             tail_neighbors.append(get_next(body[-1], tail_safe_direction))
 
@@ -158,6 +157,11 @@ def avoid_trap(possible_moves, body, board, my_snake):
             if any(coord in safe_coords[path] for coord in tail_neighbors):
                 print(f"Chasing tail {path}!")
                 smart_moves.append(path)
+        if not smart_moves:
+            # tail might be right beside head
+            for move in all_moves:
+                if get_next(body[0], move) == body[-1]:
+                    smart_moves.append(move)
 
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves:
@@ -212,7 +216,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         # avoid food if it's there to avoid
         if len(smart_moves) > 1 and board["food"]:
             food_avoid = [move for move in smart_moves if move not in board["food"]]
-
+            print(f'Avoiding food! {food_avoid}')
 
     if board["hazards"] and  len(smart_moves) > 1 and my_snake["head"] in board["hazards"]:
         # Choose the path that takes us out of hazard
