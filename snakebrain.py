@@ -149,7 +149,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
     if not smart_moves:
         # What if we try to chase our tail
         tail_neighbors = []
-        tail_safe = get_safe_moves(possible_moves, [body[-1]], board)
+        tail_safe = get_safe_moves(all_moves, [body[-1]], board)
+        print(f'{tail_safe}')
         for tail_safe_direction in tail_safe:
             tail_neighbors.append(get_next(body[-1], tail_safe_direction))
 

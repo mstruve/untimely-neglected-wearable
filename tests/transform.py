@@ -8,7 +8,8 @@ with open('./boardstate.raw') as f:
 
 move = {}
 board = {}
-boardsize = 11
+boardsize = 7
+snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device']
 
 # TODO: make this an argument
 if len(boardstate["Hazards"]) > 0:
@@ -33,7 +34,7 @@ for Snake in boardstate["Snakes"]:
     new_snake["length"] = len(new_snake["body"])
     new_snake["head"] = new_snake["body"][0]
 
-    if new_snake["name"] == 'Untimely Neglected Wearable':
+    if new_snake["name"] in snake_names:
         move["you"] = new_snake.copy()
     
     board["snakes"].append(new_snake)
