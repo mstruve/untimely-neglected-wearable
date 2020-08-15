@@ -1,0 +1,265 @@
+{
+    "game": {
+        "id": "avoid-corner-left",
+        "timeout": 500
+    },
+    "turn": 72,
+    "you": {
+        "id": "gs_QbhYX4MSGG8KSJGyTd98DkFf",
+        "name": "Untimely Neglected Wearable",
+        "health": 98,
+        "body": [
+            {
+                "x": 7,
+                "y": 9
+            },
+            {
+                "x": 7,
+                "y": 10
+            },
+            {
+                "x": 6,
+                "y": 10
+            },
+            {
+                "x": 5,
+                "y": 10
+            },
+            {
+                "x": 5,
+                "y": 9
+            },
+            {
+                "x": 4,
+                "y": 9
+            },
+            {
+                "x": 4,
+                "y": 10
+            },
+            {
+                "x": 3,
+                "y": 10
+            },
+            {
+                "x": 3,
+                "y": 9
+            },
+            {
+                "x": 3,
+                "y": 8
+            },
+            {
+                "x": 4,
+                "y": 8
+            }
+        ],
+        "shout": "",
+        "length": 11,
+        "head": {
+            "x": 7,
+            "y": 9
+        }
+    },
+    "board": {
+        "snakes": [
+            {
+                "id": "gs_K37RtDGrgcRBV9XjMGRTgSjG",
+                "name": "BlackMamba",
+                "health": 69,
+                "body": [
+                    {
+                        "x": 0,
+                        "y": 8
+                    },
+                    {
+                        "x": 0,
+                        "y": 9
+                    },
+                    {
+                        "x": 0,
+                        "y": 10
+                    },
+                    {
+                        "x": 1,
+                        "y": 10
+                    },
+                    {
+                        "x": 2,
+                        "y": 10
+                    },
+                    {
+                        "x": 2,
+                        "y": 9
+                    },
+                    {
+                        "x": 1,
+                        "y": 9
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 0,
+                    "y": 8
+                }
+            },
+            {
+                "id": "gs_QbhYX4MSGG8KSJGyTd98DkFf",
+                "name": "Untimely Neglected Wearable",
+                "health": 98,
+                "body": [
+                    {
+                        "x": 7,
+                        "y": 9
+                    },
+                    {
+                        "x": 7,
+                        "y": 10
+                    },
+                    {
+                        "x": 6,
+                        "y": 10
+                    },
+                    {
+                        "x": 5,
+                        "y": 10
+                    },
+                    {
+                        "x": 5,
+                        "y": 9
+                    },
+                    {
+                        "x": 4,
+                        "y": 9
+                    },
+                    {
+                        "x": 4,
+                        "y": 10
+                    },
+                    {
+                        "x": 3,
+                        "y": 10
+                    },
+                    {
+                        "x": 3,
+                        "y": 9
+                    },
+                    {
+                        "x": 3,
+                        "y": 8
+                    },
+                    {
+                        "x": 4,
+                        "y": 8
+                    }
+                ],
+                "shout": "",
+                "length": 11,
+                "head": {
+                    "x": 7,
+                    "y": 9
+                }
+            },
+            {
+                "id": "gs_MfTg9RqmWVWyrBpKdq6HJXTK",
+                "name": "civil-serpent",
+                "health": 99,
+                "body": [
+                    {
+                        "x": 2,
+                        "y": 0
+                    },
+                    {
+                        "x": 1,
+                        "y": 0
+                    },
+                    {
+                        "x": 1,
+                        "y": 1
+                    },
+                    {
+                        "x": 1,
+                        "y": 2
+                    },
+                    {
+                        "x": 1,
+                        "y": 3
+                    },
+                    {
+                        "x": 1,
+                        "y": 4
+                    },
+                    {
+                        "x": 1,
+                        "y": 5
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 2,
+                    "y": 0
+                }
+            },
+            {
+                "id": "gs_BqfpQ69GpbS9Fk4DcKtFhR6P",
+                "name": "sss1m0n",
+                "health": 71,
+                "body": [
+                    {
+                        "x": 8,
+                        "y": 8
+                    },
+                    {
+                        "x": 7,
+                        "y": 8
+                    },
+                    {
+                        "x": 7,
+                        "y": 7
+                    },
+                    {
+                        "x": 6,
+                        "y": 7
+                    },
+                    {
+                        "x": 6,
+                        "y": 6
+                    },
+                    {
+                        "x": 6,
+                        "y": 5
+                    },
+                    {
+                        "x": 6,
+                        "y": 4
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 8,
+                    "y": 8
+                }
+            }
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 9,
+                "y": 1
+            },
+            {
+                "x": 8,
+                "y": 10
+            },
+            {
+                "x": 10,
+                "y": 6
+            }
+        ],
+        "hazards": []
+    }
+}
