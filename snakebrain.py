@@ -104,6 +104,26 @@ def steps_to_safety(direction, start, board):
         retval += max([board["width"], board["height"]])
     return retval
 
+def at_wall(coord, board):
+    return coord["x"] == 0 or coord["y"] == 0 or coord["x"] == board["width"] - 1 or coord["y"] == board["height"] - 1
+
+def avoid_crowd(moves, board, my_snake):
+    crowd_cost = {}
+    
+    # Perhaps there's a clever way to create a dictionary of functions, but I want to be able to read this tomorrow
+    if 'up' in moves:
+        crowd_cost['up'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['y'] > my_snake['head']['y']])
+    if 'down' in moves:
+        crowd_cost['down'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['y'] < my_snake['head']['y']])
+    if 'left' in moves:
+        crowd_cost['left'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['x'] < my_snake['head']['x']])
+    if 'right' in moves:
+        crowd_cost['right'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['x'] > my_snake['head']['x']] )
+ 
+    
+    print(f'Crowd control: {crowd_cost}')
+    return [move for move in moves if crowd_cost[move] == min(crowd_cost.values())]
+
 
 def avoid_trap(possible_moves, body, board, my_snake):
     # make sure the chosen diretion has an escape route
@@ -172,8 +192,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    #if len(smart_moves) == 2 and at_wall(my_snake["head"], board)
-    #   smart_moves = avoid_crowd(smart_moves, board)
+    if len(smart_moves) == 2 and len(board['snakes']) > 1 and at_wall(my_snake["head"], board):
+       smart_moves = avoid_crowd(smart_moves, board, my_snake)
 
     hunger_threshold = 35
 
