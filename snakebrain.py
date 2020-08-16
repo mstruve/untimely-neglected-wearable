@@ -192,7 +192,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    if len(smart_moves) == 2 and len(board['snakes']) > 1 and at_wall(my_snake["head"], board):
+    if len(smart_moves) == 2 and len(board['snakes']) > 1 and at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
        smart_moves = avoid_crowd(smart_moves, board, my_snake)
 
     hunger_threshold = 35
