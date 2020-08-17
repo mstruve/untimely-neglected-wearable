@@ -202,7 +202,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             for move in smart_moves:
                 head_distance[move] = get_closest_enemy_head(get_next(body[0], move), enemy_snakes)
 
-            if min(head_distance.values() <= 3):
+            if min(head_distance.values()) <= 3:
                 print(f'choosing to avoid heads {head_distance}')
                 smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
 
