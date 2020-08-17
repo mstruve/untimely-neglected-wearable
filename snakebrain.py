@@ -81,16 +81,10 @@ def get_minimum_moves(start_coord, targets):
         steps.append(abs(coord["x"] - start_coord["x"]) + abs(coord["y"] - start_coord["y"]))
     return min(steps)
 
-def get_closest_enemy(head_coord, snakes):
-    if len(snakes) == 1:
-        # so alone
-        return -1
-    steps = []
-    for snake in snakes:
-        if snake["head"] == head_coord:
-            continue
-        for body in snake["body"]:
-            steps.append(abs(body["x"] - head_coord["x"]) + abs(body["y"] - head_coord["y"]))
+def get_closest_enemy_head(head_coord, other_snakes):
+    steps = [100]
+    for snake in other_snakes:
+        steps.append(abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]))
     return min(steps)
 
 def steps_to_safety(direction, start, board):
@@ -132,6 +126,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     food_avoid = []
     all_moves = ["up", "down", "left", "right"]
     safe_moves = get_safe_moves(possible_moves, body, board)
+    enemy_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
     safe_coords = {}
 
     # We know these directions are safe... for now
@@ -192,13 +187,21 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    if len(smart_moves) == 2 and len(board['snakes']) > 1 and at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
-       smart_moves = avoid_crowd(smart_moves, board, my_snake)
+    if len(smart_moves) == 2 and len(board['snakes']) > 1:
+        if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
+            smart_moves = avoid_crowd(smart_moves, board, my_snake)
+        else:
+            head_distance = {}
+            for move in smart_moves:
+                head_distance[move] = get_closest_enemy_head(get_next(body[0], move), enemy_snakes)
+
+            print(f'choosing to avoid heads {head_distance}')
+            smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
 
     hunger_threshold = 35
 
     # Seek food if there are other snakes larger than us, or if health is low
-    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in board["snakes"] if snake["id"] != my_snake["id"]):
+    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes):
         print("Hungry!")
         food_choices = safe_coords.keys() 
         food_moves = {}
