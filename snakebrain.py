@@ -195,14 +195,14 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
     # make a conservative choice when at a wall
     if len(smart_moves) == 2 and len(board['snakes']) > 1:
-        if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
-            smart_moves = avoid_crowd(smart_moves, board, my_snake)
-        else:
-            head_distance = {}
-            for move in smart_moves:
-                head_distance[move] = get_closest_enemy_head(get_next(body[0], move), enemy_snakes)
+        head_distance = {}
+        for move in smart_moves:
+            head_distance[move] = get_closest_enemy_head(get_next(body[0], move), enemy_snakes)
 
-            if min(head_distance.values()) <= 3:
+        if min(head_distance.values()) <= 3:
+            if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
+                smart_moves = avoid_crowd(smart_moves, board, my_snake)
+            else:
                 print(f'choosing to avoid heads {head_distance}')
                 smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
 
