@@ -8,7 +8,7 @@ with open('./boardstate.raw') as f:
 
 move = {}
 board = {}
-boardsize = 7
+boardsize = 11
 snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device']
 
 # TODO: make this an argument

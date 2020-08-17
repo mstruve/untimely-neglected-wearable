@@ -49,7 +49,7 @@ def avoid_snakes(future_head, snake_bodies, foods):
     for snake in snake_bodies:
         if future_head in snake["body"][:-1]:
             return False
-        if future_head == snake["body"][-1] and any (move in foods for move in get_all_moves(snake["body"][0])):
+        if future_head == snake["body"][-1] and any(move in foods for move in get_all_moves(snake["body"][0])):
             # if this snake eats, its tail will not move
             return False
     return True
@@ -178,6 +178,13 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 test_move = get_next(body[0], move)
                 if test_move == body[-1] and test_move not in body[:-1]:
                     smart_moves.append(move)
+        if not smart_moves:
+            # maybe an enemy tail?
+            for move in safe_coords.keys():
+                test_move = get_next(body[0], move)
+                for snake in enemy_snakes:
+                    if test_move == snake["body"][-1] and test_move not in body[:-1] and not any(coord in board["food"] for coord in get_all_moves(snake["body"][0])):
+                        smart_moves.append(move)
 
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves:
