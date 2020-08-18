@@ -91,6 +91,21 @@ def get_closest_enemy_head(head_coord, other_snakes):
         steps.append(abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]))
     return min(steps)
 
+def get_body_segment_count(coord, move, snakes):
+    retval = 0
+    for snake in snakes:
+        for segment in snake["body"]:
+            if move == 'up' and segment['y'] > coord['y']:
+                retval += 1
+            elif move == 'down' and segment['y'] < coord['y']:
+                retval += 1
+            elif move == 'right' and segment['x'] > coord['x']:
+                retval += 1
+            elif move == 'left' and segment['x'] < coord['x']:
+                retval += 1
+    print(f'{move} body weight is {retval}')
+    return retval
+
 def line_to_safety(direction, start, board):
     # either straight into a wall or into the safe zone
     retval = 0
@@ -240,15 +255,21 @@ def avoid_trap(possible_moves, body, board, my_snake):
     # make a conservative choice when at a wall
     if len(smart_moves) == 2 and len(board['snakes']) > 1:
         head_distance = {}
+        body_weight = {}
         for move in smart_moves:
-            head_distance[move] = get_closest_enemy_head(get_next(body[0], move), enemy_snakes)
+            next_coord = get_next(body[0], move)
+            head_distance[move] = get_closest_enemy_head(next_coord, enemy_snakes)
+            body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
 
         if min(head_distance.values()) <= 3:
             if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
                 smart_moves = avoid_crowd(smart_moves, board, my_snake)
             else:
-                print(f'choosing to avoid heads {head_distance}')
                 smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
+                print(f'choosing {smart_moves} to avoid heads {head_distance}')
+                if len(smart_moves) > 1:
+                    smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
+                    print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
     hunger_threshold = 35
 
