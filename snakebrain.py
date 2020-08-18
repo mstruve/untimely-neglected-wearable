@@ -330,7 +330,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
     if board["hazards"] and my_snake["head"] in board["hazards"]:
         # Choose the path that takes us out of hazard
         if not smart_moves:
-            smart_moves = safe_coords.keys()
+            print(f'no moves, using {safe_coords.keys()}')
+            smart_moves = list(safe_coords.keys())
         if smart_moves and len(smart_moves) > 1:
             shortest_path = min([steps_to_safety(move, my_snake["head"], board) for move in smart_moves])
             smart_moves = [move for move in smart_moves if steps_to_safety(move, my_snake["head"], board) == shortest_path]
