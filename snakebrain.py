@@ -244,6 +244,10 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 print(f'Smart food is {food_intersect}')
                 if food_intersect:
                     smart_moves = food_intersect
+                elif min(closest_food.values()) * 16 < my_snake["health"]:
+                    # we're gonna make it, chief
+                    print('Diving into danger!')
+                    smart_moves = closest_food
     else:
         # avoid food if it's there to avoid
         if len(smart_moves) > 1 and board["food"]:
