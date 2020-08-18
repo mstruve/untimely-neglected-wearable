@@ -1,0 +1,232 @@
+{
+    "game": {
+        "id": "attack-right",
+        "timeout": 500
+    },
+    "turn": 116,
+    "you": {
+        "id": "gs_BC9STDbh78MyRgDkfBMPS4rW",
+        "name": "Untimely Neglected Wearable",
+        "health": 80,
+        "body": [
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 0
+            },
+            {
+                "x": 3,
+                "y": 0
+            },
+            {
+                "x": 4,
+                "y": 0
+            },
+            {
+                "x": 5,
+                "y": 0
+            },
+            {
+                "x": 6,
+                "y": 0
+            },
+            {
+                "x": 7,
+                "y": 0
+            }
+        ],
+        "shout": "",
+        "length": 10,
+        "head": {
+            "x": 0,
+            "y": 2
+        }
+    },
+    "board": {
+        "snakes": [
+            {
+                "id": "gs_fSKvPd4gTT8VDdyctPKQqpjX",
+                "name": "Blue Whale",
+                "health": 90,
+                "body": [
+                    {
+                        "x": 1,
+                        "y": 3
+                    },
+                    {
+                        "x": 2,
+                        "y": 3
+                    },
+                    {
+                        "x": 3,
+                        "y": 3
+                    },
+                    {
+                        "x": 4,
+                        "y": 3
+                    },
+                    {
+                        "x": 5,
+                        "y": 3
+                    },
+                    {
+                        "x": 5,
+                        "y": 4
+                    },
+                    {
+                        "x": 5,
+                        "y": 5
+                    },
+                    {
+                        "x": 6,
+                        "y": 5
+                    },
+                    {
+                        "x": 6,
+                        "y": 6
+                    },
+                    {
+                        "x": 6,
+                        "y": 7
+                    },
+                    {
+                        "x": 6,
+                        "y": 8
+                    }
+                ],
+                "shout": "",
+                "length": 11,
+                "head": {
+                    "x": 1,
+                    "y": 3
+                }
+            },
+            {
+                "id": "gs_fPHpSjbJWDjcSFQhqhDMCmYD",
+                "name": "snake_and_bake",
+                "health": 68,
+                "body": [
+                    {
+                        "x": 1,
+                        "y": 1
+                    },
+                    {
+                        "x": 2,
+                        "y": 1
+                    },
+                    {
+                        "x": 3,
+                        "y": 1
+                    },
+                    {
+                        "x": 3,
+                        "y": 2
+                    },
+                    {
+                        "x": 4,
+                        "y": 2
+                    },
+                    {
+                        "x": 5,
+                        "y": 2
+                    },
+                    {
+                        "x": 6,
+                        "y": 2
+                    },
+                    {
+                        "x": 7,
+                        "y": 2
+                    },
+                    {
+                        "x": 8,
+                        "y": 2
+                    }
+                ],
+                "shout": "",
+                "length": 9,
+                "head": {
+                    "x": 1,
+                    "y": 1
+                }
+            },
+            {
+                "id": "gs_BC9STDbh78MyRgDkfBMPS4rW",
+                "name": "Untimely Neglected Wearable",
+                "health": 80,
+                "body": [
+                    {
+                        "x": 0,
+                        "y": 2
+                    },
+                    {
+                        "x": 0,
+                        "y": 1
+                    },
+                    {
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "x": 1,
+                        "y": 0
+                    },
+                    {
+                        "x": 2,
+                        "y": 0
+                    },
+                    {
+                        "x": 3,
+                        "y": 0
+                    },
+                    {
+                        "x": 4,
+                        "y": 0
+                    },
+                    {
+                        "x": 5,
+                        "y": 0
+                    },
+                    {
+                        "x": 6,
+                        "y": 0
+                    },
+                    {
+                        "x": 7,
+                        "y": 0
+                    }
+                ],
+                "shout": "",
+                "length": 10,
+                "head": {
+                    "x": 0,
+                    "y": 2
+                }
+            }
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 0,
+                "y": 3
+            }
+        ],
+        "hazards": []
+    }
+}
