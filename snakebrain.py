@@ -19,6 +19,10 @@ def get_all_moves(coord):
     choices = ["left", "right", "up", "down"]
     return [get_next(coord, choice) for choice in choices]
 
+def get_reverse(move):
+    reverse_moves = {"left":"right","right":"left","up":"down","down":"up"}
+    return reverse_moves[move]
+
 def get_safe_moves(possible_moves, body, board):
 
     safe_moves = []
@@ -27,7 +31,7 @@ def get_safe_moves(possible_moves, body, board):
         guess_coord = get_next(body[0], guess)
         if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"], board["food"]): 
             safe_moves.append(guess)
-        elif guess_coord == body[-1] and guess_coord not in body[:-1]:
+        elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
             # This is only valid after turn 3, if there's a non-tail segmenet in the square we terminate
             safe_moves.append(guess)
@@ -87,8 +91,8 @@ def get_closest_enemy_head(head_coord, other_snakes):
         steps.append(abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]))
     return min(steps)
 
-def steps_to_safety(direction, start, board):
-    # There must be a better way to do this
+def line_to_safety(direction, start, board):
+    # either straight into a wall or into the safe zone
     retval = 0
     next_coord = get_next(start, direction)
     while next_coord in board["hazards"] and avoid_walls(next_coord, board["width"], board["height"]):
@@ -97,6 +101,28 @@ def steps_to_safety(direction, start, board):
     if not avoid_walls(next_coord, board["width"], board["height"]):
         retval += max([board["width"], board["height"]])
     return retval
+
+def steps_to_safety(direction, start, board):
+    # Trace a path to safety
+    escape_route = [get_next(start, direction)]
+    next_coord = escape_route[0]
+    extra_cost = 0
+
+    while next_coord in board["hazards"] and avoid_walls(next_coord, board["width"], board["height"]):
+        costs = {}
+        # Really need to choose a new direction now
+        for choice in get_safe_moves([move for move in ["up", "down", "left", "right"] if move != get_reverse(direction)], escape_route, board):
+            costs[choice] = line_to_safety(choice, get_next(next_coord, choice), board)
+        if costs:
+            bestway = min(costs.values())
+            for choice in costs.keys():
+                if costs[choice] == bestway:
+                    direction = choice
+        next_coord = get_next(next_coord, direction)
+        escape_route.insert(0, next_coord)
+    if not avoid_walls(next_coord, board["width"], board["height"]):
+        extra_cost += max([board["width"], board["height"]])
+    return len(escape_route) + extra_cost
 
 def at_wall(coord, board):
     return coord["x"] == 0 or coord["y"] == 0 or coord["x"] == board["width"] - 1 or coord["y"] == board["height"] - 1
@@ -176,7 +202,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
 
 
 
-    if not smart_moves:
+    if not smart_moves and my_snake['head'] not in board['hazards']:
         # What if we try to chase our tail
         tail_neighbors = []
         tail_safe = get_safe_moves(all_moves, [body[-1]], board)
@@ -202,10 +228,10 @@ def avoid_trap(possible_moves, body, board, my_snake):
                         smart_moves.append(move)
 
     # No clear path, try to fit ourselves in the longest one
-    if safe_coords and not smart_moves:
+    if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
         squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
         if len(safe_coords[squeeze_move]) > 2 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
-            print(f'squeezing into {squeeze_move}')
+            print(f'squeezing into {squeeze_move} {safe_coords}')
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
@@ -224,7 +250,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     hunger_threshold = 35
 
     # Seek food if there are other snakes larger than us, or if health is low
-    if my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes):
+    if board['food'] and  my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes):
         print("Hungry!")
         food_choices = safe_coords.keys() 
         food_moves = {}
@@ -251,9 +277,15 @@ def avoid_trap(possible_moves, body, board, my_snake):
                         closest_food.append(path)
         
         if closest_food:
+
             if my_snake["health"] < hunger_threshold:
                 print("Blinded by hunger")
-                smart_moves = closest_food
+                hazard_avoid = [move for move in closest_food if get_next(body[0], move) not in board['hazards']]
+                if hazard_avoid:
+                    print("but staying safe")
+                    smart_moves = hazard_avoid
+                else:
+                    smart_moves = closest_food
             else:
                 food_intersect = [move for move in smart_moves if move in closest_food] 
                 print(f'Smart food is {food_intersect}')
@@ -271,11 +303,14 @@ def avoid_trap(possible_moves, body, board, my_snake):
             food_avoid = [move for move in smart_moves if get_next(body[0], move) not in board["food"]]
             print(f'Avoiding food! {food_avoid}')
 
-    if board["hazards"] and len(smart_moves) > 1 and my_snake["head"] in board["hazards"]:
+    if board["hazards"] and my_snake["head"] in board["hazards"]:
         # Choose the path that takes us out of hazard
-        shortest_path = min([steps_to_safety(move, my_snake["head"], board) for move in smart_moves])
-        smart_moves = [move for move in smart_moves if steps_to_safety(move, my_snake["head"], board) == shortest_path]
-        print(f'going {shortest_path} moves towards {smart_moves} to escape hazards')
+        if not smart_moves:
+            smart_moves = safe_coords.keys()
+        if smart_moves and len(smart_moves) > 1:
+            shortest_path = min([steps_to_safety(move, my_snake["head"], board) for move in smart_moves])
+            smart_moves = [move for move in smart_moves if steps_to_safety(move, my_snake["head"], board) == shortest_path]
+            print(f'smartly going {shortest_path} {smart_moves} steps to escape hazards')
     elif food_avoid:
         smart_moves = food_avoid
 
