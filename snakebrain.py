@@ -99,7 +99,7 @@ def line_to_safety(direction, start, board):
         next_coord = get_next(next_coord, direction)
         retval += 1
     if not avoid_walls(next_coord, board["width"], board["height"]):
-        retval += max([board["width"], board["height"]])
+        retval += max([board["width"], board["height"]]) + 1
     return retval
 
 def steps_to_safety(direction, start, board):
@@ -107,8 +107,7 @@ def steps_to_safety(direction, start, board):
     escape_route = [get_next(start, direction)]
     next_coord = escape_route[0]
     extra_cost = 0
-
-    while next_coord in board["hazards"] and avoid_walls(next_coord, board["width"], board["height"]):
+    while next_coord in board["hazards"] and avoid_walls(next_coord, board["width"], board["height"]) and extra_cost == 0 and len(escape_route) < 100:
         costs = {}
         # Really need to choose a new direction now
         for choice in get_safe_moves([move for move in ["up", "down", "left", "right"] if move != get_reverse(direction)], escape_route, board):
@@ -119,9 +118,13 @@ def steps_to_safety(direction, start, board):
                 if costs[choice] == bestway:
                     direction = choice
         next_coord = get_next(next_coord, direction)
-        escape_route.insert(0, next_coord)
+        if next_coord in escape_route:
+            extra_cost += len(escape_route)
+        else:
+            escape_route.insert(0, next_coord)
     if not avoid_walls(next_coord, board["width"], board["height"]):
         extra_cost += max([board["width"], board["height"]])
+#    print(f'in hazard, overhead to explore {direction} is {extra_cost}, path is {escape_route}')
     return len(escape_route) + extra_cost
 
 def at_wall(coord, board):
