@@ -171,6 +171,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     all_moves = ["up", "down", "left", "right"]
     safe_moves = get_safe_moves(possible_moves, body, board)
     enemy_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
+    eating_snakes = []
     safe_coords = {}
     next_coords = {}
 
@@ -216,6 +217,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 for move, coord in next_coords.items():
                     if coord == enemy_must:
                         print(f'Eating {snake["name"]} by going {move} to {coord}')
+                        eating_snakes.append(snake)
                         smart_moves.append(move)
 
 
@@ -253,7 +255,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    if len(smart_moves) >= 2 and len(board['snakes']) > 1:
+    if len(smart_moves) >= 2 and len(board['snakes']) > 1 and not eating_snakes:
         head_distance = {}
         body_weight = {}
         for move in smart_moves:
