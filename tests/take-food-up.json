@@ -1,0 +1,209 @@
+{
+    "game": {
+        "id": "take-food-up",
+        "timeout": 500
+    },
+    "turn": 38,
+    "you": {
+        "id": "gs_B38DKfwT3vGFxYxf3xKVQjx6",
+        "name": "Untimely Neglected Wearable",
+        "health": 99,
+        "body": [
+            {
+                "x": 10,
+                "y": 4
+            },
+            {
+                "x": 10,
+                "y": 3
+            },
+            {
+                "x": 10,
+                "y": 2
+            },
+            {
+                "x": 10,
+                "y": 1
+            },
+            {
+                "x": 10,
+                "y": 0
+            },
+            {
+                "x": 9,
+                "y": 0
+            },
+            {
+                "x": 9,
+                "y": 1
+            }
+        ],
+        "shout": "",
+        "length": 7,
+        "head": {
+            "x": 10,
+            "y": 4
+        }
+    },
+    "board": {
+        "snakes": [
+            {
+                "id": "gs_wjWhTh3QkHtw7HKywTDRRtPM",
+                "name": "civil-serpent",
+                "health": 64,
+                "body": [
+                    {
+                        "x": 3,
+                        "y": 7
+                    },
+                    {
+                        "x": 4,
+                        "y": 7
+                    },
+                    {
+                        "x": 4,
+                        "y": 6
+                    },
+                    {
+                        "x": 3,
+                        "y": 6
+                    }
+                ],
+                "shout": "",
+                "length": 4,
+                "head": {
+                    "x": 3,
+                    "y": 7
+                }
+            },
+            {
+                "id": "gs_B38DKfwT3vGFxYxf3xKVQjx6",
+                "name": "Untimely Neglected Wearable",
+                "health": 99,
+                "body": [
+                    {
+                        "x": 10,
+                        "y": 4
+                    },
+                    {
+                        "x": 10,
+                        "y": 3
+                    },
+                    {
+                        "x": 10,
+                        "y": 2
+                    },
+                    {
+                        "x": 10,
+                        "y": 1
+                    },
+                    {
+                        "x": 10,
+                        "y": 0
+                    },
+                    {
+                        "x": 9,
+                        "y": 0
+                    },
+                    {
+                        "x": 9,
+                        "y": 1
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 10,
+                    "y": 4
+                }
+            },
+            {
+                "id": "gs_9cCDQ37fKS9b7Tjg3qWTDbfW",
+                "name": "Snax",
+                "health": 83,
+                "body": [
+                    {
+                        "x": 9,
+                        "y": 7
+                    },
+                    {
+                        "x": 8,
+                        "y": 7
+                    },
+                    {
+                        "x": 7,
+                        "y": 7
+                    },
+                    {
+                        "x": 7,
+                        "y": 6
+                    },
+                    {
+                        "x": 7,
+                        "y": 5
+                    },
+                    {
+                        "x": 8,
+                        "y": 5
+                    },
+                    {
+                        "x": 9,
+                        "y": 5
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 9,
+                    "y": 7
+                }
+            },
+            {
+                "id": "gs_QPghwKGtyc3gkyqcpqrrYcKB",
+                "name": "Unicorn",
+                "health": 95,
+                "body": [
+                    {
+                        "x": 2,
+                        "y": 4
+                    },
+                    {
+                        "x": 3,
+                        "y": 4
+                    },
+                    {
+                        "x": 4,
+                        "y": 4
+                    },
+                    {
+                        "x": 5,
+                        "y": 4
+                    },
+                    {
+                        "x": 6,
+                        "y": 4
+                    },
+                    {
+                        "x": 6,
+                        "y": 3
+                    }
+                ],
+                "shout": "",
+                "length": 6,
+                "head": {
+                    "x": 2,
+                    "y": 4
+                }
+            }
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 10,
+                "y": 5
+            }
+        ],
+        "hazards": []
+    }
+}

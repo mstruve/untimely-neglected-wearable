@@ -173,6 +173,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
     enemy_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
     eating_snakes = []
     safe_coords = {}
+    head_distance = {}
     next_coords = {}
 
     # We know these directions are safe... for now
@@ -252,8 +253,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    if len(smart_moves) >= 2 and len(board['snakes']) > 1 and not eating_snakes:
-        head_distance = {}
+    if len(smart_moves) == 2 and len(board['snakes']) > 1 and not eating_snakes:
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
@@ -281,6 +281,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         food_choices = safe_coords.keys() 
         food_moves = {}
         closest_food = []
+        greed = False
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in board["food"]):
@@ -292,6 +293,9 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 if food_moves[path] <= closest_food_distance:
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
+                    if head_distance[path] and food_moves[path] < head_distance[path]:
+                        print("being greedy")
+                        greed = True
         elif board["food"]:
             for path in food_choices:
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
@@ -304,8 +308,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
         
         if closest_food:
 
-            if my_snake["health"] < hunger_threshold:
-                print("Blinded by hunger")
+            if my_snake["health"] < hunger_threshold or greed:
+                print("Blinded by hunger or greed")
                 hazard_avoid = [move for move in closest_food if get_next(body[0], move) not in board['hazards']]
                 if hazard_avoid:
                     print("but staying safe")
