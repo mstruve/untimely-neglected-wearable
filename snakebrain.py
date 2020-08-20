@@ -253,7 +253,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
             smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
-    if len(smart_moves) == 2 and len(board['snakes']) > 1:
+    if len(smart_moves) >= 2 and len(board['snakes']) > 1:
         head_distance = {}
         body_weight = {}
         for move in smart_moves:
@@ -268,8 +268,11 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
                 print(f'choosing {smart_moves} to avoid heads {head_distance}')
                 if len(smart_moves) > 1:
-                    smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
-                    print(f'choosing {smart_moves} to avoid bodies {body_weight}')
+                    smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
+                    print(f'choosing {smart_moves} to bump self off wall')
+                    if len(smart_moves) > 1:
+                        smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
+                        print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
     hunger_threshold = 35
 

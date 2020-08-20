@@ -1,0 +1,225 @@
+{
+    "game": {
+        "id": "avoid-corner-up",
+        "timeout": 500
+    },
+    "turn": 49,
+    "you": {
+        "id": "gs_HgHMWqCHSh8bVYP6x9QxXVKV",
+        "name": "Untimely Neglected Wearable",
+        "health": 94,
+        "body": [
+            {
+                "x": 3,
+                "y": 0
+            },
+            {
+                "x": 4,
+                "y": 0
+            },
+            {
+                "x": 5,
+                "y": 0
+            },
+            {
+                "x": 6,
+                "y": 0
+            },
+            {
+                "x": 6,
+                "y": 1
+            },
+            {
+                "x": 6,
+                "y": 2
+            },
+            {
+                "x": 6,
+                "y": 3
+            }
+        ],
+        "shout": "",
+        "length": 7,
+        "head": {
+            "x": 3,
+            "y": 0
+        }
+    },
+    "board": {
+        "snakes": [
+            {
+                "id": "gs_xfh36wC4rcxVDHGFkF99XgpY",
+                "name": "Peluchito",
+                "health": 82,
+                "body": [
+                    {
+                        "x": 0,
+                        "y": 1
+                    },
+                    {
+                        "x": 0,
+                        "y": 2
+                    },
+                    {
+                        "x": 1,
+                        "y": 2
+                    },
+                    {
+                        "x": 2,
+                        "y": 2
+                    },
+                    {
+                        "x": 3,
+                        "y": 2
+                    },
+                    {
+                        "x": 4,
+                        "y": 2
+                    },
+                    {
+                        "x": 4,
+                        "y": 3
+                    },
+                    {
+                        "x": 3,
+                        "y": 3
+                    },
+                    {
+                        "x": 3,
+                        "y": 4
+                    }
+                ],
+                "shout": "",
+                "length": 9,
+                "head": {
+                    "x": 0,
+                    "y": 1
+                }
+            },
+            {
+                "id": "gs_HgHMWqCHSh8bVYP6x9QxXVKV",
+                "name": "Untimely Neglected Wearable",
+                "health": 94,
+                "body": [
+                    {
+                        "x": 3,
+                        "y": 0
+                    },
+                    {
+                        "x": 4,
+                        "y": 0
+                    },
+                    {
+                        "x": 5,
+                        "y": 0
+                    },
+                    {
+                        "x": 6,
+                        "y": 0
+                    },
+                    {
+                        "x": 6,
+                        "y": 1
+                    },
+                    {
+                        "x": 6,
+                        "y": 2
+                    },
+                    {
+                        "x": 6,
+                        "y": 3
+                    }
+                ],
+                "shout": "",
+                "length": 7,
+                "head": {
+                    "x": 3,
+                    "y": 0
+                }
+            },
+            {
+                "id": "gs_yVGjbgkW3T7Bb43YxQfxv8wR",
+                "name": "SnakeOne",
+                "health": 85,
+                "body": [
+                    {
+                        "x": 9,
+                        "y": 6
+                    },
+                    {
+                        "x": 9,
+                        "y": 7
+                    },
+                    {
+                        "x": 10,
+                        "y": 7
+                    },
+                    {
+                        "x": 10,
+                        "y": 8
+                    },
+                    {
+                        "x": 9,
+                        "y": 8
+                    },
+                    {
+                        "x": 8,
+                        "y": 8
+                    }
+                ],
+                "shout": "",
+                "length": 6,
+                "head": {
+                    "x": 9,
+                    "y": 6
+                }
+            },
+            {
+                "id": "gs_qPTxd3R379RSGydvVbYMwgGS",
+                "name": "Mock1487",
+                "health": 87,
+                "body": [
+                    {
+                        "x": 5,
+                        "y": 6
+                    },
+                    {
+                        "x": 6,
+                        "y": 6
+                    },
+                    {
+                        "x": 6,
+                        "y": 5
+                    },
+                    {
+                        "x": 7,
+                        "y": 5
+                    },
+                    {
+                        "x": 8,
+                        "y": 5
+                    },
+                    {
+                        "x": 8,
+                        "y": 6
+                    }
+                ],
+                "shout": "I am a python snake!",
+                "length": 6,
+                "head": {
+                    "x": 5,
+                    "y": 6
+                }
+            }
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 0,
+                "y": 0
+            }
+        ],
+        "hazards": []
+    }
+}
