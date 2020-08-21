@@ -293,7 +293,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
                 if food_moves[path] <= closest_food_distance:
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
-                    if head_distance[path] and food_moves[path] < head_distance[path]:
+                    if head_distance.get(path) and food_moves[path] < head_distance[path]:
                         print("being greedy")
                         greed = True
         elif board["food"]:
