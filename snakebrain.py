@@ -33,7 +33,7 @@ def get_safe_moves(possible_moves, body, board):
             safe_moves.append(guess)
         elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
-            # This is only valid after turn 3, if there's a non-tail segmenet in the square we terminate
+            # This is only valid after turn 3, if there's a non-tail segment in the square we terminate
             safe_moves.append(guess)
 
     return safe_moves
@@ -85,7 +85,7 @@ def get_minimum_moves(start_coord, targets):
         steps.append(abs(coord["x"] - start_coord["x"]) + abs(coord["y"] - start_coord["y"]))
     return min(steps)
 
-def get_closest_enemy_head(head_coord, other_snakes):
+def get_closest_enemy_head_distance(head_coord, other_snakes):
     steps = [100]
     for snake in other_snakes:
         steps.append(abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]))
@@ -257,7 +257,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
-            head_distance[move] = get_closest_enemy_head(next_coord, enemy_snakes)
+            head_distance[move] = get_closest_enemy_head_distance(next_coord, enemy_snakes)
             body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
 
         if min(head_distance.values()) <= 3:
@@ -281,7 +281,7 @@ def avoid_trap(possible_moves, body, board, my_snake):
         food_choices = safe_coords.keys() 
         food_moves = {}
         closest_food = []
-        greed = False
+        greed_moves = []
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in board["food"]):
@@ -294,8 +294,8 @@ def avoid_trap(possible_moves, body, board, my_snake):
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
                     if head_distance.get(path) and food_moves[path] < head_distance[path]:
-                        print("being greedy")
-                        greed = True
+                        print(f"being greedy, closest head is {head_distance[path]}")
+                        greed_moves.append(path)
         elif board["food"]:
             for path in food_choices:
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
@@ -308,12 +308,17 @@ def avoid_trap(possible_moves, body, board, my_snake):
         
         if closest_food:
 
-            if my_snake["health"] < hunger_threshold or greed:
+            if my_snake["health"] < hunger_threshold or greed_moves:
                 print("Blinded by hunger or greed")
                 hazard_avoid = [move for move in closest_food if get_next(body[0], move) not in board['hazards']]
                 if hazard_avoid:
-                    print("but staying safe")
-                    smart_moves = hazard_avoid
+                    if greed_moves:
+                        # should probably intersect hazard_avoid and greed_moves
+                        print(f"choosing greed: {greed_moves}")
+                        smart_moves = greed_moves
+                    else:
+                        print("but staying safe")
+                        smart_moves = hazard_avoid
                 else:
                     smart_moves = closest_food
             else:
