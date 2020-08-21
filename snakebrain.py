@@ -29,7 +29,7 @@ def get_safe_moves(possible_moves, body, board):
 
     for guess in possible_moves:
         guess_coord = get_next(body[0], guess)
-        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"], board["food"]): 
+        if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
             safe_moves.append(guess)
         elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless we have just eaten food
@@ -49,12 +49,9 @@ def avoid_walls(future_head, board_width, board_height):
 
     return result
 
-def avoid_snakes(future_head, snake_bodies, foods):
+def avoid_snakes(future_head, snake_bodies):
     for snake in snake_bodies:
         if future_head in snake["body"][:-1]:
-            return False
-        if future_head == snake["body"][-1] and any(move in foods for move in get_all_moves(snake["body"][0])):
-            # if this snake eats, its tail will not move
             return False
     return True
 
@@ -90,6 +87,14 @@ def get_closest_enemy_head_distance(head_coord, other_snakes):
     for snake in other_snakes:
         steps.append(abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]))
     return min(steps)
+
+def get_closest_enemy(head_coord, other_snakes):
+    retval = []
+    distance = get_closest_enemy_head_distance(head_coord, other_snakes)
+    for snake in other_snakes:
+        if abs(snake["head"]["x"] - head_coord["x"]) + abs(snake["head"]["y"] - head_coord["y"]) == distance:
+            retval.append(snake)
+    return retval
 
 def get_body_segment_count(coord, move, snakes):
     retval = 0
@@ -162,10 +167,29 @@ def avoid_crowd(moves, board, my_snake):
     print(f'Crowd control: {crowd_cost}')
     return [move for move in moves if crowd_cost[move] == min(crowd_cost.values())]
 
+def is_drafting(my_snake, other_snake):
+    neck = my_snake["body"][1]
+    if abs(other_snake["head"]["x"] - my_snake["head"]["x"]) > 1:
+        return False
+    if abs(other_snake["head"]["y"] - my_snake["head"]["y"]) > 1:
+        return False
+    return other_snake["head"]["x"] == neck["x"] or other_snake["head"]["y"] == neck["y"]
 
-def avoid_trap(possible_moves, body, board, my_snake):
-    # make sure the chosen diretion has an escape route
-    # is the path leading into an enclosed space smaller than us?
+def continue_draft(moves, my_snake, other_snake):
+    retval = []
+    neck = my_snake["body"][1]
+    if other_snake["head"]["x"] < my_snake["head"]["x"] and neck["x"] == other_snake["head"]["x"]:
+        retval.append("right")
+    if other_snake["head"]["x"] > my_snake["head"]["x"] and neck["x"] == other_snake["head"]["x"]:
+        retval.append("left")
+    if other_snake["head"]["y"] < my_snake["head"]["y"] and neck["y"] == other_snake["head"]["y"]:
+        retval.append("up")
+    if other_snake["head"]["y"] > my_snake["head"]["y"] and neck["y"] == other_snake["head"]["y"]:
+        retval.append("down")
+    return [move for move in moves if move in retval]
+
+def get_smart_moves(possible_moves, body, board, my_snake):
+    # the main function of the snake - choose the best move based on the information available
     smart_moves = []
     food_avoid = []
     all_moves = ["up", "down", "left", "right"]
@@ -264,14 +288,20 @@ def avoid_trap(possible_moves, body, board, my_snake):
             if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
                 smart_moves = avoid_crowd(smart_moves, board, my_snake)
             else:
-                smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
-                print(f'choosing {smart_moves} to avoid heads {head_distance}')
-                if len(smart_moves) > 1:
-                    smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
-                    print(f'choosing {smart_moves} to bump self off wall')
+                enemies = get_closest_enemy(my_snake["head"], enemy_snakes)
+                if len(enemies) == 1 and enemies[0]['length'] > my_snake['length'] and is_drafting(my_snake, enemies[0]):
+                    # Try to push enemy into wall, hopefully corner
+                    smart_moves = continue_draft(smart_moves, my_snake, enemies[0])
+                    print(f'Drafting {enemies[0]["name"]} {smart_moves}')
+                else:
+                    smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
+                    print(f'choosing {smart_moves} to avoid heads {head_distance}')
                     if len(smart_moves) > 1:
-                        smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
-                        print(f'choosing {smart_moves} to avoid bodies {body_weight}')
+                        smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
+                        print(f'choosing {smart_moves} to bump self off wall')
+                        if len(smart_moves) > 1:
+                            smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
+                            print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
     hunger_threshold = 35
 
