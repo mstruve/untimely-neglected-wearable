@@ -277,7 +277,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             for snake in enemy_snakes:
                 if abs(my_snake['head']['x'] - snake['head']['x']) <= 2 and abs(my_snake['head']['y'] - snake['head']['y']) <= 2:
                     for move in safe_coords.keys():
-                        escape_plan[move] = get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board)
+                        escape_plan[move] = len(get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board))
             if escape_plan:
                 for move in escape_plan.keys():
                     if escape_plan[move] == max(escape_plan.values()) and move not in smart_moves:
@@ -289,7 +289,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 print(f'squeezing into {squeeze_move} {safe_coords}')
                 smart_moves.append(squeeze_move)
 
-    # make a conservative choice when at a wall
+    # tiebreakers when there are two paths
     if len(smart_moves) == 2 and len(board['snakes']) > 1 and not eating_snakes:
         body_weight = {}
         for move in smart_moves:
@@ -312,6 +312,12 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if len(smart_moves) > 1 and at_wall(my_snake["head"], board):
                         smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
                         print(f'choosing {smart_moves} to bump self off wall')
+                    if len(smart_moves) > 1:
+                        escape_plan = {}
+                        for move in smart_moves:
+                            escape_plan[move] = len(get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board))
+                        smart_moves = [move for move in escape_plan.keys() if escape_plan[move] == max(escape_plan.values())]
+                        print(f'choosing {smart_moves} because there are {max(escape_plan.values())} ways out')
                     if len(smart_moves) > 1:
                         smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
                         print(f'choosing {smart_moves} to avoid bodies {body_weight}')
