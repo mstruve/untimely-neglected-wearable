@@ -313,6 +313,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         closest_food = []
         greed_moves = []
         avoid_moves = []
+        food_targets = [food for food in board["food"] if food not in board["hazards"]]
+        if not food_targets:
+            food_targets = board["food"]
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in board["food"]):
@@ -337,9 +340,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                         avoid_moves.append(path)
                         if not (path in avoid_moves):
                             greed_moves.append(path)
-        elif board["food"]:
+        else:
             for path in food_choices:
-                food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
+                food_moves[path] = get_minimum_moves(get_next(body[0], path), food_targets)
             if food_moves:
                 closest_food_distance = min(food_moves.values())
                 for path in food_moves.keys():
