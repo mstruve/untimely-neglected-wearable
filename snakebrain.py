@@ -32,8 +32,7 @@ def get_safe_moves(possible_moves, body, board):
         if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
             safe_moves.append(guess)
         elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
-            # The tail is also a safe place to go... unless we have just eaten food
-            # This is only valid after turn 3, if there's a non-tail segment in the square we terminate
+            # The tail is also a safe place to go... unless there is a non-tail segment there too
             safe_moves.append(guess)
 
     return safe_moves
@@ -195,6 +194,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     all_moves = ["up", "down", "left", "right"]
     safe_moves = get_safe_moves(possible_moves, body, board)
     enemy_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
+    # enemy_threats = [snake for snake in enemy_snakes if snake["length"] >= my_sname["length"]]
     eating_snakes = []
     safe_coords = {}
     head_distance = {}
@@ -271,10 +271,23 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
-        squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
-        if len(safe_coords[squeeze_move]) > 2 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
-            print(f'squeezing into {squeeze_move} {safe_coords}')
-            smart_moves.append(squeeze_move)
+        if enemy_snakes:
+            # consider enemies
+            escape_plan = {}
+            for snake in enemy_snakes:
+                if abs(my_snake['head']['x'] - snake['head']['x']) <= 2 and abs(my_snake['head']['y'] - snake['head']['y']) <= 2:
+                    for move in safe_coords.keys():
+                        escape_plan[move] = get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board)
+            if escape_plan:
+                for move in escape_plan.keys():
+                    if escape_plan[move] == max(escape_plan.values()) and move not in smart_moves:
+                        print(f'going {move}, there are {escape_plan[move]} options')
+                        smart_moves.append(move)
+        if not smart_moves:
+            squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
+            if len(safe_coords[squeeze_move]) > 2 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
+                print(f'squeezing into {squeeze_move} {safe_coords}')
+                smart_moves.append(squeeze_move)
 
     # make a conservative choice when at a wall
     if len(smart_moves) == 2 and len(board['snakes']) > 1 and not eating_snakes:
