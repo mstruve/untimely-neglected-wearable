@@ -230,7 +230,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     for path in safe_coords.keys():
         guess_coord = get_next(body[0], path)
 
-        if len(safe_coords[path]) >= len(body) and avoid_consumption(guess_coord, board["snakes"], my_snake) and avoid_hazards(guess_coord, board["hazards"]):
+        if (len(safe_coords[path]) >= len(body) or any(snake["body"][-1] in safe_coords[path] for snake in enemy_snakes)) and avoid_consumption(guess_coord, board["snakes"], my_snake) and avoid_hazards(guess_coord, board["hazards"]):
             smart_moves.append(path)
     
     # check if other snakes are being forced
@@ -346,8 +346,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 if food_moves[path] <= closest_food_distance:
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
-                    # TODO: update this test to see if we're the closest to the food, not to compare distance from 
-                    # us to food vs. enemy
+                    # see if we're the closest to the food
                     if head_distance.get(path) and food_moves[path] < head_distance[path]:
                         for food in board["food"]:
                             distance_to_me = get_minimum_moves(food, [my_snake["head"]])
