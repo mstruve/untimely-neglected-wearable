@@ -228,7 +228,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
     for path in safe_coords.keys():
         guess_coord = get_next(body[0], path)
-        print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
+        #print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
         # TODO: also consider tails that are overlapping bodies, but more than 1 step away
         if ((len(safe_coords[path]) >= len(body) or 
                 any(snake["body"][-1] in safe_coords[path] for snake in enemy_snakes)) and 
@@ -356,17 +356,17 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
                     # see if we're the closest to the food
-                    if head_distance.get(path) and food_moves[path] < head_distance[path]:
-                        for food in food_targets:
-                            distance_to_me = get_minimum_moves(food, [my_snake["head"]])
-                            if distance_to_me == food_moves[path] + 1:
-                                for snake in enemy_snakes:
-                                    if get_minimum_moves(food, [snake["head"]]) < distance_to_me and snake["length"] >= my_snake["length"]:
-                                        # Don't
-                                        print(f'Avoiding food towards {path} because of {snake["name"]}')
-                                        avoid_moves.append(path)
-                        if not (path in avoid_moves):
-                            greed_moves.append(path)
+                    #if head_distance.get(path) and food_moves[path] < head_distance[path]:
+                    for food in food_targets:
+                        distance_to_me = get_minimum_moves(food, [my_snake["head"]])
+                        if distance_to_me == food_moves[path] + 1:
+                            for snake in enemy_snakes:
+                                if get_minimum_moves(food, [snake["head"]]) < distance_to_me and snake["length"] >= my_snake["length"]:
+                                    # Don't
+                                    print(f'Avoiding food towards {path} because of {snake["name"]}')
+                                    avoid_moves.append(path)
+                    if not (path in avoid_moves):
+                        greed_moves.append(path)
         else:
             for path in food_choices:
                 food_moves[path] = get_minimum_moves(get_next(body[0], path), food_targets)
@@ -393,10 +393,12 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 else:
                     smart_moves = closest_food
             else:
-                food_intersect = [move for move in smart_moves if move in closest_food] 
+                food_intersect = [move for move in smart_moves if move in closest_food and move not in avoid_moves] 
                 print(f'Smart food is {food_intersect}')
                 if food_intersect:
                     smart_moves = food_intersect
+                elif avoid_moves:
+                    smart_moves = [move for move in smart_moves if move not in avoid_moves]
                 elif min(food_moves.values()) * 16 < my_snake["health"]: #and if path in hazard
                     # we're gonna make it, chief
                     hazard_pay = [move for move in closest_food if get_next(body[0], move) in board['hazards']]
