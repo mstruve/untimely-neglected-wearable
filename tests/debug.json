@@ -3,406 +3,163 @@
         "id": "transform",
         "timeout": 500
     },
-    "turn": 51,
+    "turn": 3,
     "you": {
-        "id": "gs_bXTbQf3hKWWkq8Q4xVXkKtwK",
+        "id": "gs_TQVCGBXgvGp7bKgPjQmgqfy7",
         "name": "Untimely Neglected Wearable",
-        "health": 51,
+        "health": 99,
         "body": [
             {
-                "x": 12,
-                "y": 11
+                "x": 8,
+                "y": 3
             },
             {
-                "x": 11,
-                "y": 11
+                "x": 8,
+                "y": 4
             },
             {
-                "x": 10,
-                "y": 11
+                "x": 8,
+                "y": 5
             },
             {
-                "x": 10,
-                "y": 12
+                "x": 9,
+                "y": 5
             }
         ],
         "shout": "",
         "length": 4,
         "head": {
-            "x": 12,
-            "y": 11
+            "x": 8,
+            "y": 3
         }
     },
     "board": {
         "snakes": [
             {
-                "id": "gs_JjrgmdwtPBqQkjRVRFFKSSVR",
-                "name": "Mithrandir",
-                "health": 100,
+                "id": "gs_qmSPPgbRWpTmj33hmyrFgv6W",
+                "name": "Mock1487",
+                "health": 97,
                 "body": [
                     {
-                        "x": 16,
-                        "y": 17
+                        "x": 1,
+                        "y": 6
                     },
                     {
-                        "x": 15,
-                        "y": 17
+                        "x": 1,
+                        "y": 7
                     },
                     {
-                        "x": 14,
-                        "y": 17
-                    },
-                    {
-                        "x": 13,
-                        "y": 17
-                    },
-                    {
-                        "x": 12,
-                        "y": 17
-                    },
-                    {
-                        "x": 12,
-                        "y": 17
+                        "x": 1,
+                        "y": 8
                     }
                 ],
-                "shout": "",
-                "length": 6,
+                "shout": "I am a python snake!",
+                "length": 3,
                 "head": {
-                    "x": 16,
-                    "y": 17
+                    "x": 1,
+                    "y": 6
                 }
             },
             {
-                "id": "gs_YW4T9k3RSwJDRSSCGMvKJpJc",
-                "name": "HUUUUUUUUUUUUUUUNGRY",
-                "health": 87,
+                "id": "gs_Wh4xx3TBJKWQwTmhbypYc4Y9",
+                "name": "otto-snek",
+                "health": 99,
                 "body": [
                     {
-                        "x": 8,
-                        "y": 11
-                    },
-                    {
-                        "x": 7,
-                        "y": 11
+                        "x": 6,
+                        "y": 1
                     },
                     {
                         "x": 6,
-                        "y": 11
+                        "y": 2
                     },
                     {
                         "x": 5,
-                        "y": 11
+                        "y": 2
                     },
                     {
-                        "x": 4,
-                        "y": 11
-                    },
-                    {
-                        "x": 3,
-                        "y": 11
-                    },
-                    {
-                        "x": 3,
-                        "y": 10
-                    },
-                    {
-                        "x": 2,
-                        "y": 10
+                        "x": 5,
+                        "y": 1
                     }
                 ],
                 "shout": "",
-                "length": 8,
+                "length": 4,
+                "head": {
+                    "x": 6,
+                    "y": 1
+                }
+            },
+            {
+                "id": "gs_TBKpr4RTJYyB9McWkmcTCyr4",
+                "name": "SnakeCore",
+                "health": 97,
+                "body": [
+                    {
+                        "x": 10,
+                        "y": 3
+                    },
+                    {
+                        "x": 9,
+                        "y": 3
+                    },
+                    {
+                        "x": 9,
+                        "y": 2
+                    }
+                ],
+                "shout": "",
+                "length": 3,
+                "head": {
+                    "x": 10,
+                    "y": 3
+                }
+            },
+            {
+                "id": "gs_TQVCGBXgvGp7bKgPjQmgqfy7",
+                "name": "Untimely Neglected Wearable",
+                "health": 99,
+                "body": [
+                    {
+                        "x": 8,
+                        "y": 3
+                    },
+                    {
+                        "x": 8,
+                        "y": 4
+                    },
+                    {
+                        "x": 8,
+                        "y": 5
+                    },
+                    {
+                        "x": 9,
+                        "y": 5
+                    }
+                ],
+                "shout": "",
+                "length": 4,
                 "head": {
                     "x": 8,
-                    "y": 11
-                }
-            },
-            {
-                "id": "gs_mfWPjBQhSpcMMGt3TtMV73VD",
-                "name": "Inspector Clouseau",
-                "health": 68,
-                "body": [
-                    {
-                        "x": 13,
-                        "y": 12
-                    },
-                    {
-                        "x": 13,
-                        "y": 13
-                    },
-                    {
-                        "x": 13,
-                        "y": 14
-                    },
-                    {
-                        "x": 13,
-                        "y": 15
-                    },
-                    {
-                        "x": 14,
-                        "y": 15
-                    }
-                ],
-                "shout": "",
-                "length": 5,
-                "head": {
-                    "x": 13,
-                    "y": 12
-                }
-            },
-            {
-                "id": "gs_PGBxSBvbcCdPqRV39cbt4dbW",
-                "name": "Searching for Ice Cream",
-                "health": 51,
-                "body": [
-                    {
-                        "x": 15,
-                        "y": 4
-                    },
-                    {
-                        "x": 15,
-                        "y": 5
-                    },
-                    {
-                        "x": 16,
-                        "y": 5
-                    },
-                    {
-                        "x": 16,
-                        "y": 4
-                    }
-                ],
-                "shout": "nom",
-                "length": 4,
-                "head": {
-                    "x": 15,
-                    "y": 4
-                }
-            },
-            {
-                "id": "gs_bXTbQf3hKWWkq8Q4xVXkKtwK",
-                "name": "Untimely Neglected Wearable",
-                "health": 51,
-                "body": [
-                    {
-                        "x": 12,
-                        "y": 11
-                    },
-                    {
-                        "x": 11,
-                        "y": 11
-                    },
-                    {
-                        "x": 10,
-                        "y": 11
-                    },
-                    {
-                        "x": 10,
-                        "y": 12
-                    }
-                ],
-                "shout": "",
-                "length": 4,
-                "head": {
-                    "x": 12,
-                    "y": 11
-                }
-            },
-            {
-                "id": "gs_mYpJMGRtRKVbRFdHFCPWBMQ9",
-                "name": "Speak Softly and Write Lots of Code",
-                "health": 87,
-                "body": [
-                    {
-                        "x": 1,
-                        "y": 16
-                    },
-                    {
-                        "x": 0,
-                        "y": 16
-                    },
-                    {
-                        "x": 0,
-                        "y": 17
-                    },
-                    {
-                        "x": 0,
-                        "y": 18
-                    },
-                    {
-                        "x": 1,
-                        "y": 18
-                    }
-                ],
-                "shout": "",
-                "length": 5,
-                "head": {
-                    "x": 1,
-                    "y": 16
+                    "y": 3
                 }
             }
         ],
-        "width": 19,
-        "height": 19,
+        "width": 11,
+        "height": 11,
         "food": [
             {
-                "x": 13,
-                "y": 11
+                "x": 0,
+                "y": 10
+            },
+            {
+                "x": 10,
+                "y": 0
+            },
+            {
+                "x": 5,
+                "y": 5
             }
         ],
-        "hazards": [
-            {
-                "x": 0,
-                "y": 18
-            },
-            {
-                "x": 0,
-                "y": 17
-            },
-            {
-                "x": 0,
-                "y": 16
-            },
-            {
-                "x": 0,
-                "y": 15
-            },
-            {
-                "x": 0,
-                "y": 14
-            },
-            {
-                "x": 0,
-                "y": 13
-            },
-            {
-                "x": 0,
-                "y": 12
-            },
-            {
-                "x": 0,
-                "y": 11
-            },
-            {
-                "x": 0,
-                "y": 10
-            },
-            {
-                "x": 0,
-                "y": 9
-            },
-            {
-                "x": 0,
-                "y": 8
-            },
-            {
-                "x": 0,
-                "y": 7
-            },
-            {
-                "x": 0,
-                "y": 6
-            },
-            {
-                "x": 0,
-                "y": 5
-            },
-            {
-                "x": 0,
-                "y": 4
-            },
-            {
-                "x": 0,
-                "y": 3
-            },
-            {
-                "x": 0,
-                "y": 2
-            },
-            {
-                "x": 0,
-                "y": 1
-            },
-            {
-                "x": 0,
-                "y": 0
-            },
-            {
-                "x": 18,
-                "y": 18
-            },
-            {
-                "x": 18,
-                "y": 17
-            },
-            {
-                "x": 18,
-                "y": 16
-            },
-            {
-                "x": 18,
-                "y": 15
-            },
-            {
-                "x": 18,
-                "y": 14
-            },
-            {
-                "x": 18,
-                "y": 13
-            },
-            {
-                "x": 18,
-                "y": 12
-            },
-            {
-                "x": 18,
-                "y": 11
-            },
-            {
-                "x": 18,
-                "y": 10
-            },
-            {
-                "x": 18,
-                "y": 9
-            },
-            {
-                "x": 18,
-                "y": 8
-            },
-            {
-                "x": 18,
-                "y": 7
-            },
-            {
-                "x": 18,
-                "y": 6
-            },
-            {
-                "x": 18,
-                "y": 5
-            },
-            {
-                "x": 18,
-                "y": 4
-            },
-            {
-                "x": 18,
-                "y": 3
-            },
-            {
-                "x": 18,
-                "y": 2
-            },
-            {
-                "x": 18,
-                "y": 1
-            },
-            {
-                "x": 18,
-                "y": 0
-            }
-        ]
+        "hazards": []
     }
 }
