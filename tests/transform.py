@@ -15,7 +15,7 @@ snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Devic
 if len(boardstate["Hazards"]) > 0:
     boardsize = 19
 
-move["game"] = {"id":"battleroyaleTest", "timeout": 500}
+move["game"] = {"id":"transform", "timeout": 500}
 move["turn"] = boardstate["Turn"]
 board["snakes"] = []
 board["width"] = boardsize

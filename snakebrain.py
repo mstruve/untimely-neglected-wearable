@@ -72,7 +72,7 @@ def avoid_food(future_head, food):
 
 def avoid_hazards(future_head, hazards):
     # Convenience method
-    return future_head not in hazards
+    return not future_head in hazards
 
 def get_minimum_moves(start_coord, targets):
     # This could probably be a lambda but I'm not that smart
@@ -224,13 +224,17 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 all_coords.append(explore)
             explore_edge = next_explore.copy()
 
-        #print(f"{all_coords}")
         safe_coords[guess] += list(map(dict, frozenset(frozenset(i.items()) for i in all_coords)))
 
     for path in safe_coords.keys():
         guess_coord = get_next(body[0], path)
-
-        if (len(safe_coords[path]) >= len(body) or any(snake["body"][-1] in safe_coords[path] for snake in enemy_snakes)) and avoid_consumption(guess_coord, board["snakes"], my_snake) and avoid_hazards(guess_coord, board["hazards"]):
+        print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
+        # TODO: also consider tails that are overlapping bodies, but more than 1 step away
+        if ((len(safe_coords[path]) >= len(body) or 
+                any(snake["body"][-1] in safe_coords[path] for snake in enemy_snakes)) and 
+                avoid_consumption(guess_coord, board["snakes"], my_snake) and
+                avoid_hazards(guess_coord, board["hazards"])
+            ):
             smart_moves.append(path)
     
     # check if other snakes are being forced
@@ -333,12 +337,14 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         greed_moves = []
         avoid_moves = []
         food_targets = [food for food in board["food"] if food not in board["hazards"]]
+        print(f'{food_targets}')
         if not food_targets:
+            print ('no food?')
             food_targets = board["food"]
 
         for path in food_choices:
-            if any(food in safe_coords[path] for food in board["food"]):
-                food_moves[path] = get_minimum_moves(get_next(body[0], path), board["food"])
+            if any(food in safe_coords[path] for food in food_targets):
+                food_moves[path] = get_minimum_moves(get_next(body[0], path), food_targets)
 
         if food_moves:
             closest_food_distance = min(food_moves.values())
@@ -348,7 +354,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     closest_food.append(path)
                     # see if we're the closest to the food
                     if head_distance.get(path) and food_moves[path] < head_distance[path]:
-                        for food in board["food"]:
+                        for food in food_targets:
                             distance_to_me = get_minimum_moves(food, [my_snake["head"]])
                             if distance_to_me == food_moves[path] + 1:
                                 for snake in enemy_snakes:
@@ -398,7 +404,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         # avoid food if it's there to avoid
         if len(smart_moves) > 1 and board["food"]:
             food_avoid = [move for move in smart_moves if get_next(body[0], move) not in board["food"]]
-            print(f'Avoiding food! {food_avoid}')
+            print(f'Not hungry, avoiding food! moves are {food_avoid}')
 
     if board["hazards"] and my_snake["head"] in board["hazards"]:
         # Choose the path that takes us out of hazard
