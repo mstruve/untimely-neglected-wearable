@@ -9,7 +9,7 @@ with open('./boardstate.raw') as f:
 move = {}
 board = {}
 boardsize = 11
-snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device']
+snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device', 'Snakeberry Pi']
 
 # TODO: make this an argument
 if len(boardstate["Hazards"]) > 0:
