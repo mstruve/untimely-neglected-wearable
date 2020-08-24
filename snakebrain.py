@@ -200,6 +200,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     head_distance = {}
     next_coords = {}
 
+    hunger_threshold = 35
+
     # We know these directions are safe... for now
     for guess in safe_moves:
         #print(f"exploring {guess}")
@@ -291,6 +293,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         print(f'going {move}, there are {escape_plan[move]} options')
                         smart_moves.append(move)
         if not smart_moves:
+            # TODO: find the longest contiguous path in the safe zones to decide which way to squeeze
             squeeze_move = max(safe_coords, key= lambda x: len(safe_coords[x]))
             if len(safe_coords[squeeze_move]) > 2 and avoid_consumption(get_next(body[0], squeeze_move), board["snakes"], my_snake):
                 print(f'squeezing into {squeeze_move} {safe_coords}')
@@ -313,6 +316,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     # Try to push enemy into wall, hopefully corner
                     smart_moves = continue_draft(smart_moves, my_snake, enemy_threats[0])
                     print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
+                    eating_snakes = True
                 else:
                     smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
                     print(f'choosing {smart_moves} to avoid heads {head_distance}')
@@ -329,7 +333,6 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
                         print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
-    hunger_threshold = 35
 
     # Seek food if there are other snakes larger than us, or if health is low
     if board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
