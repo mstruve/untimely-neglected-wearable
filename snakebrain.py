@@ -233,7 +233,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         #print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
         # TODO: also consider tails that are overlapping bodies, but more than 1 step away
         if ((len(safe_coords[path]) >= len(body) or 
-                any(snake["body"][-1] in safe_coords[path] for snake in enemy_snakes)) and 
+                any(snake["body"][-1] in safe_coords[path] for snake in board["snakes"])) and 
                 avoid_consumption(guess_coord, board["snakes"], my_snake) and
                 avoid_hazards(guess_coord, board["hazards"])
             ):
