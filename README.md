@@ -10,7 +10,7 @@ It has code to:
 - Avoid collisions with other snakes on the board.
 - Avoid entering spaces too small to fit.
 - Avoid hazard spaces unless it's the only spot for food
-- Seek food when other snakes are larger.
+- Seek food when other snakes are larger, and avoid it if we're the largest.
 - Blindly find food when very low in health.
 - Take a certain winning move if the other snake has one available move
 - Take a drafting larger snake to a wall, just to see what happens
@@ -19,6 +19,12 @@ It has code to:
 
 - Improve hazard code to reduce time spent in hazards.
 - Improve tail chasing code to chase enemy tails.
+- Improve squeeze code to determine if an escape route would open due to a tail
+
+### Possible refactoring
+
+- Improve pathfinder code to use a multi-node tree
+- Optimize to run on the Raspberry Pi
 
 ### Technologies Used
 

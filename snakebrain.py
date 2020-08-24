@@ -310,7 +310,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         if min(head_distance.values()) <= 3:
             if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
                 if board["hazards"]:
-                    hazard_avoid = [move for move in smart_moves if not any(safe_coords[move] in board["hazards"])]
+                    hazard_avoid = [move for move in smart_moves if not any(coord in board["hazards"] for coord in safe_coords[move])]
                     if hazard_avoid:
                         smart_moves = hazard_avoid
                         print(f'avoiding hazards {hazard_avoid}')
