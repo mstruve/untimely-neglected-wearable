@@ -309,14 +309,19 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
         if min(head_distance.values()) <= 3:
             if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
-                smart_moves = avoid_crowd(smart_moves, board, my_snake)
+                if board["hazards"]:
+                    hazard_avoid = [move for move in smart_moves if not any(safe_coords[move] in board["hazards"])]
+                    if hazard_avoid:
+                        smart_moves = hazard_avoid
+                        print(f'avoiding hazards {hazard_avoid}')
+                if len(smart_moves) > 1:
+                    smart_moves = avoid_crowd(smart_moves, board, my_snake)
             else:
                 enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in enemy_snakes if snake['length'] > my_snake['length']])
                 if len(enemy_threats) == 1 and is_drafting(my_snake, enemy_threats[0]):
                     # Try to push enemy into wall, hopefully corner
-                    smart_moves = continue_draft(smart_moves, my_snake, enemy_threats[0])
+                    eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
                     print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
-                    eating_snakes = True
                 else:
                     smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
                     print(f'choosing {smart_moves} to avoid heads {head_distance}')
@@ -335,7 +340,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
 
     # Seek food if there are other snakes larger than us, or if health is low
-    if board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
+    if len(smart_moves) > 1 and board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
         print("Hungry!")
         food_choices = safe_coords.keys() 
         food_moves = {}
