@@ -251,7 +251,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if coord == enemy_must:
                         print(f'Eating {snake["name"]} by going {move} to {coord}')
                         eating_snakes.append(move)
-        elif enemy_options:
+        elif len(enemy_options) == 2:
             for enemy_move in enemy_options:
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
