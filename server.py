@@ -67,7 +67,7 @@ class Battlesnake(object):
         safe_time = time.perf_counter() - begin_time
  #       pr = cProfile.Profile()
  #       pr.enable()
-        smart_moves = snakebrain.get_smart_moves(safe_moves, body, data["board"], data["you"])
+        smart_moves = snakebrain.get_smart_moves(possible_moves, body, data["board"], data["you"])
  #       pr.disable()
  #       pr.print_stats()
         smart_time = time.perf_counter() - begin_time

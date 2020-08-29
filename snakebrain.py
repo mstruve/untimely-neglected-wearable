@@ -23,10 +23,10 @@ def get_reverse(move):
     reverse_moves = {"left":"right","right":"left","up":"down","down":"up"}
     return reverse_moves[move]
 
-def get_safe_moves(possible_moves, body, board):
+def get_safe_moves(possible_moves, body, board, squadmates = None):
 
     safe_moves = []
-
+    
     for guess in possible_moves:
         guess_coord = get_next(body[0], guess)
         if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
@@ -34,7 +34,10 @@ def get_safe_moves(possible_moves, body, board):
         elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
             # The tail is also a safe place to go... unless there is a non-tail segment there too
             safe_moves.append(guess)
-
+        elif squadmates:
+            for snake in squadmates:
+                if guess_coord in snake["body"][1:]:
+                    safe_moves.append(guess)
     return safe_moves
 
 def avoid_walls(future_head, board_width, board_height):
@@ -62,7 +65,7 @@ def avoid_consumption(future_head, snake_bodies, my_snake):
     for snake in snake_bodies:
         if snake == my_snake:
             continue
-        if future_head in get_all_moves(snake["head"]) and my_length <= snake["length"]:
+        if future_head in get_all_moves(snake["head"]) and future_head not in snake["body"][1:] and my_length <= snake["length"]:
             print(f'DANGER OF EATED {my_snake["head"]}->{future_head} by {snake["name"]}')
             return False
     return True
@@ -192,9 +195,12 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     smart_moves = []
     food_avoid = []
     all_moves = ["up", "down", "left", "right"]
-    safe_moves = get_safe_moves(possible_moves, body, board)
-    enemy_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
-    # enemy_threats = [snake for snake in enemy_snakes if snake["length"] >= my_sname["length"]]
+    other_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
+    enemy_snakes = [snake for snake in other_snakes if snake["squad"] != my_snake["squad"]]
+    squadmates = [snake for snake in other_snakes if snake["squad"] == my_snake["squad"]]
+    safe_moves = get_safe_moves(possible_moves, body, board, squadmates)
+
+    # enemy_threats = [snake for snake in other_snakes if snake["length"] >= my_sname["length"]]
     eating_snakes = []
     safe_coords = {}
     head_distance = {}
@@ -215,7 +221,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         for segments in body[:-1]:
             next_explore.clear()
             for explore in explore_edge:
-                safe = get_safe_moves(all_moves, [explore], board)
+                safe = get_safe_moves(all_moves, [explore], board, squadmates)
                 #print(f"Safe moves: {safe}")
                 for safe_move in safe:
                     guess_coord_next = get_next(explore, safe_move)
@@ -242,7 +248,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     # check if other snakes are being forced to move into a square we can occupy.  
     # We don't need to determine if this is a safe move since we can use the freed-up
     # space for future moves
-    for snake in enemy_snakes:
+    for snake in other_snakes:
         enemy_options = get_safe_moves(all_moves, snake['body'], board)
         if len(enemy_options) == 1:
             enemy_must = get_next(snake['body'][0], enemy_options[0])
@@ -281,16 +287,16 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             # maybe an enemy tail?
             for move in safe_coords.keys():
                 test_move = get_next(body[0], move)
-                for snake in enemy_snakes:
+                for snake in other_snakes:
                     if test_move == snake["body"][-1] and test_move not in body[:-1] and not any(coord in board["food"] for coord in get_all_moves(snake["body"][0])):
                         smart_moves.append(move)
 
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
-        if enemy_snakes:
+        if other_snakes:
             # consider enemies
             escape_plan = {}
-            for snake in enemy_snakes:
+            for snake in other_snakes:
                 if abs(my_snake['head']['x'] - snake['head']['x']) <= 2 and abs(my_snake['head']['y'] - snake['head']['y']) <= 2:
                     for move in safe_coords.keys():
                         escape_plan[move] = len(get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board))
@@ -311,7 +317,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
-            head_distance[move] = get_closest_enemy_head_distance(next_coord, enemy_snakes)
+            head_distance[move] = get_closest_enemy_head_distance(next_coord, other_snakes)
             body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
 
         if min(head_distance.values()) <= 3:
@@ -324,7 +330,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 if len(smart_moves) > 1:
                     smart_moves = avoid_crowd(smart_moves, board, my_snake)
             else:
-                enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in enemy_snakes if snake['length'] > my_snake['length']])
+                enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in other_snakes if snake['length'] > my_snake['length']])
                 if len(enemy_threats) == 1 and is_drafting(my_snake, enemy_threats[0]):
                     # Try to push enemy into wall, hopefully corner
                     eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
@@ -375,7 +381,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     for food in food_targets:
                         distance_to_me = get_minimum_moves(food, [my_snake["head"]])
                         if distance_to_me == food_moves[path] + 1:
-                            for snake in enemy_snakes:
+                            for snake in other_snakes:
                                 if get_minimum_moves(food, [snake["head"]]) <= distance_to_me and get_minimum_moves(snake["head"], [my_snake["head"]]) <= 4 and snake["length"] >= my_snake["length"]:
                                     # Don't
                                     print(f'Avoiding food towards {path} because of {snake["name"]}')

@@ -9,7 +9,7 @@ with open('./boardstate.raw') as f:
 move = {}
 board = {}
 boardsize = 11
-snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device', 'Snakeberry Pi']
+snake_names = ['Untimely Neglected Wearable', 'Untimely Neglected Embedded Device', 'Snakeberry P2i']
 
 # TODO: make this an argument
 if len(boardstate["Hazards"]) > 0:
@@ -30,6 +30,7 @@ for Snake in boardstate["Snakes"]:
     new_snake["health"] = Snake["Health"]
     new_snake["body"] = [to_new_api(segment, boardsize) for segment in Snake["Body"]]
     new_snake["shout"] = Snake["Shout"]
+    new_snake["squad"] = Snake["Squad"]
 
     new_snake["length"] = len(new_snake["body"])
     new_snake["head"] = new_snake["body"][0]
