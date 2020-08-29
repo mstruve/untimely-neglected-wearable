@@ -23,7 +23,7 @@ def get_reverse(move):
     reverse_moves = {"left":"right","right":"left","up":"down","down":"up"}
     return reverse_moves[move]
 
-def get_safe_moves(possible_moves, body, board, squadmates = None):
+def get_safe_moves(possible_moves, body, board, squadmates = None, my_snake = None):
 
     safe_moves = []
     
@@ -32,11 +32,11 @@ def get_safe_moves(possible_moves, body, board, squadmates = None):
         if avoid_walls(guess_coord, board["width"], board["height"]) and avoid_snakes(guess_coord, board["snakes"]): 
             safe_moves.append(guess)
         elif len(body) > 1 and guess_coord == body[-1] and guess_coord not in body[:-1]:
-            # The tail is also a safe place to go... unless there is a non-tail segment there too
-            safe_moves.append(guess)
-        elif squadmates:
+           # The tail is also a safe place to go... unless there is a non-tail segment there too
+           safe_moves.append(guess)
+        if squadmates and my_snake:
             for snake in squadmates:
-                if guess_coord in snake["body"][1:]:
+                if guess_coord in snake["body"][1:] and guess_coord not in my_snake["body"][:-1]:
                     safe_moves.append(guess)
     return safe_moves
 
@@ -198,7 +198,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     other_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
     enemy_snakes = [snake for snake in other_snakes if snake["squad"] != my_snake["squad"]]
     squadmates = [snake for snake in other_snakes if snake["squad"] == my_snake["squad"]]
-    safe_moves = get_safe_moves(possible_moves, body, board, squadmates)
+    safe_moves = get_safe_moves(possible_moves, body, board, squadmates, my_snake)
 
     # enemy_threats = [snake for snake in other_snakes if snake["length"] >= my_sname["length"]]
     eating_snakes = []
@@ -221,7 +221,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         for segments in body[:-1]:
             next_explore.clear()
             for explore in explore_edge:
-                safe = get_safe_moves(all_moves, [explore], board, squadmates)
+                safe = get_safe_moves(all_moves, [explore], board, squadmates, my_snake)
                 #print(f"Safe moves: {safe}")
                 for safe_move in safe:
                     guess_coord_next = get_next(explore, safe_move)
