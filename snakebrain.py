@@ -194,10 +194,15 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     # the main function of the snake - choose the best move based on the information available
     smart_moves = []
     food_avoid = []
+    enemy_snakes = []
+    squadmates = []
     all_moves = ["up", "down", "left", "right"]
     other_snakes = [snake for snake in board["snakes"] if snake["id"] != my_snake["id"]]
-    enemy_snakes = [snake for snake in other_snakes if snake["squad"] != my_snake["squad"]]
-    squadmates = [snake for snake in other_snakes if snake["squad"] == my_snake["squad"]]
+    if my_snake.get("squad"):
+        enemy_snakes = [snake for snake in other_snakes if snake["squad"] != my_snake["squad"]]
+        squadmates = [snake for snake in other_snakes if snake["squad"] == my_snake["squad"]]
+    else:
+        enemy_snakes = other_snakes
     safe_moves = get_safe_moves(possible_moves, body, board, squadmates, my_snake)
 
     # enemy_threats = [snake for snake in other_snakes if snake["length"] >= my_sname["length"]]
