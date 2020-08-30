@@ -158,19 +158,26 @@ def steps_to_safety(direction, start, board):
 def at_wall(coord, board):
     return coord["x"] == 0 or coord["y"] == 0 or coord["x"] == board["width"] - 1 or coord["y"] == board["height"] - 1
 
-def avoid_crowd(moves, board, my_snake):
+def avoid_crowd(moves, enemy_snakes, my_snake):
     crowd_cost = {}
     
     # Perhaps there's a clever way to create a dictionary of functions, but I want to be able to read this tomorrow
     if 'up' in moves:
-        crowd_cost['up'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['y'] > my_snake['head']['y']])
+        others = [snake for snake in enemy_snakes if snake['head']['y'] > my_snake['head']['y']]
+        threats = [snake for snake in others if snake['length'] > my_snake['length'] and get_minimum_moves(my_snake['head'], [snake['head']]) <= 4]
+        crowd_cost['up'] = len(others) + (len(threats) * 3)
     if 'down' in moves:
-        crowd_cost['down'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['y'] < my_snake['head']['y']])
+        others = [snake for snake in enemy_snakes if snake['head']['y'] < my_snake['head']['y']]
+        threats = [snake for snake in others if snake['length'] > my_snake['length'] and get_minimum_moves(my_snake['head'], [snake['head']]) <= 4]
+        crowd_cost['down'] = len(others) + (len(threats) * 3)
     if 'left' in moves:
-        crowd_cost['left'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['x'] < my_snake['head']['x']])
+        others = [snake for snake in enemy_snakes if snake['head']['x'] < my_snake['head']['x']]
+        threats = [snake for snake in others if snake['length'] > my_snake['length'] and get_minimum_moves(my_snake['head'], [snake['head']]) <= 4]
+        crowd_cost['left'] = len(others) + (len(threats) * 3)
     if 'right' in moves:
-        crowd_cost['right'] = len([snake for snake in board["snakes"] if snake["id"] != my_snake["id"] and snake['head']['x'] > my_snake['head']['x']] )
- 
+        others = [snake for snake in enemy_snakes if snake['head']['x'] > my_snake['head']['x']]
+        threats = [snake for snake in others if snake['length'] > my_snake['length'] and get_minimum_moves(my_snake['head'], [snake['head']]) <= 4]
+        crowd_cost['right'] = len(others) + (len(threats) * 3)
     
     print(f'Crowd control: {crowd_cost}')
     return [move for move in moves if crowd_cost[move] == min(crowd_cost.values())]
@@ -268,7 +275,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if coord == enemy_must:
                         print(f'Eating {snake["name"]} by going {move} to {coord}')
                         eating_snakes.append(move)
-        elif len(enemy_options) == 2:
+        elif len(enemy_options) >= 2:
             for enemy_move in enemy_options:
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
@@ -339,7 +346,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         smart_moves = hazard_avoid
                         print(f'avoiding hazards {hazard_avoid}')
                 if len(smart_moves) > 1:
-                    smart_moves = avoid_crowd(smart_moves, board, my_snake)
+                    smart_moves = avoid_crowd(smart_moves, enemy_snakes, my_snake)
             else:
                 enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in other_snakes if snake['length'] > my_snake['length']])
                 if len(enemy_threats) == 1 and is_drafting(my_snake, enemy_threats[0]):

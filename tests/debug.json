@@ -1,226 +1,178 @@
 {
-    "turn": 20, 
     "game": {
-        "id": "transform", 
+        "id": "transform",
         "timeout": 500
-    }, 
+    },
+    "turn": 10,
     "you": {
+        "id": "gs_p4pKrtSHkdD9CYjy8vmqcFHP",
+        "name": "Untimely Neglected Wearable",
+        "health": 92,
         "body": [
             {
-                "y": 5, 
-                "x": 7
-            }, 
+                "x": 10,
+                "y": 4
+            },
             {
-                "y": 5, 
-                "x": 6
-            }, 
+                "x": 9,
+                "y": 4
+            },
             {
-                "y": 6, 
-                "x": 6
-            }, 
+                "x": 9,
+                "y": 5
+            },
             {
-                "y": 6, 
-                "x": 5
-            }, 
-            {
-                "y": 6, 
-                "x": 4
-            }, 
-            {
-                "y": 7, 
-                "x": 4
+                "x": 10,
+                "y": 5
             }
-        ], 
+        ],
+        "shout": "",
+        "squad": "",
+        "length": 4,
         "head": {
-            "y": 5, 
-            "x": 7
-        }, 
-        "name": "Untimely Neglected Wearable", 
-        "shout": "", 
-        "length": 6, 
-        "squad": "altersaddle:1", 
-        "health": 93, 
-        "id": "gs_8cpJvMCJTvrvtwHwV3Xk9BRK"
-    }, 
+            "x": 10,
+            "y": 4
+        }
+    },
     "board": {
-        "food": [
-            {
-                "y": 5, 
-                "x": 10
-            }
-        ], 
-        "width": 11, 
-        "hazards": [], 
         "snakes": [
             {
+                "id": "gs_gRc3hRRFS7pYwK9xJdrR7kGc",
+                "name": "King Gobbla",
+                "health": 96,
                 "body": [
                     {
-                        "y": 3, 
-                        "x": 9
-                    }, 
+                        "x": 7,
+                        "y": 3
+                    },
                     {
-                        "y": 2, 
-                        "x": 9
-                    }, 
+                        "x": 6,
+                        "y": 3
+                    },
                     {
-                        "y": 2, 
-                        "x": 8
-                    }, 
+                        "x": 5,
+                        "y": 3
+                    },
                     {
-                        "y": 2, 
-                        "x": 7
-                    }, 
+                        "x": 5,
+                        "y": 4
+                    },
                     {
-                        "y": 1, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 8
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 9
+                        "x": 5,
+                        "y": 5
                     }
-                ], 
+                ],
+                "shout": "Best Directions include Previous Direction",
+                "squad": "",
+                "length": 5,
                 "head": {
-                    "y": 3, 
-                    "x": 9
-                }, 
-                "name": "Nessegrev-beta", 
-                "length": 8, 
-                "shout": "", 
-                "squad": "nettogrof:1", 
-                "health": 94, 
-                "id": "gs_XHtr6HTghRmkHTyhrRMvSyjb"
-            }, 
+                    "x": 7,
+                    "y": 3
+                }
+            },
             {
+                "id": "gs_hCgjctxtcjkTXC96kdkYB4VJ",
+                "name": "snacky",
+                "health": 98,
                 "body": [
                     {
-                        "y": 2, 
-                        "x": 6
-                    }, 
+                        "x": 0,
+                        "y": 6
+                    },
                     {
-                        "y": 1, 
-                        "x": 6
-                    }, 
+                        "x": 0,
+                        "y": 7
+                    },
                     {
-                        "y": 1, 
-                        "x": 5
-                    }, 
+                        "x": 0,
+                        "y": 8
+                    },
                     {
-                        "y": 1, 
-                        "x": 4
-                    }, 
+                        "x": 1,
+                        "y": 8
+                    },
                     {
-                        "y": 1, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 1, 
-                        "x": 2
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 2
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 1
+                        "x": 1,
+                        "y": 7
                     }
-                ], 
+                ],
+                "shout": "",
+                "squad": "",
+                "length": 5,
                 "head": {
-                    "y": 2, 
-                    "x": 6
-                }, 
-                "name": "Nessegrev-beta-ovh", 
-                "length": 8, 
-                "shout": "You gonna die", 
-                "squad": "nettogrof:1", 
-                "health": 94, 
-                "id": "gs_kTVW6cgx9kQcXKQvhTmCcFBf"
-            }, 
+                    "x": 0,
+                    "y": 6
+                }
+            },
             {
+                "id": "gs_p4pKrtSHkdD9CYjy8vmqcFHP",
+                "name": "Untimely Neglected Wearable",
+                "health": 92,
                 "body": [
                     {
-                        "y": 5, 
-                        "x": 7
-                    }, 
+                        "x": 10,
+                        "y": 4
+                    },
                     {
-                        "y": 5, 
-                        "x": 6
-                    }, 
+                        "x": 9,
+                        "y": 4
+                    },
                     {
-                        "y": 6, 
-                        "x": 6
-                    }, 
+                        "x": 9,
+                        "y": 5
+                    },
                     {
-                        "y": 6, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 6, 
-                        "x": 4
-                    }, 
-                    {
-                        "y": 7, 
-                        "x": 4
+                        "x": 10,
+                        "y": 5
                     }
-                ], 
+                ],
+                "shout": "",
+                "squad": "",
+                "length": 4,
                 "head": {
-                    "y": 5, 
-                    "x": 7
-                }, 
-                "name": "Untimely Neglected Wearable", 
-                "length": 6, 
-                "shout": "", 
-                "squad": "altersaddle:1", 
-                "health": 93, 
-                "id": "gs_8cpJvMCJTvrvtwHwV3Xk9BRK"
-            }, 
+                    "x": 10,
+                    "y": 4
+                }
+            },
             {
+                "id": "gs_VCftK3DYPmtSgV9P9rmkxxdF",
+                "name": "Bear Fish Duck Human Snake",
+                "health": 90,
                 "body": [
                     {
-                        "y": 6, 
-                        "x": 2
-                    }, 
+                        "x": 7,
+                        "y": 9
+                    },
                     {
-                        "y": 6, 
-                        "x": 1
-                    }, 
+                        "x": 8,
+                        "y": 9
+                    },
                     {
-                        "y": 7, 
-                        "x": 1
-                    }, 
-                    {
-                        "y": 8, 
-                        "x": 1
-                    }, 
-                    {
-                        "y": 9, 
-                        "x": 1
-                    }, 
-                    {
-                        "y": 9, 
-                        "x": 2
+                        "x": 8,
+                        "y": 8
                     }
-                ], 
+                ],
+                "shout": "",
+                "squad": "",
+                "length": 3,
                 "head": {
-                    "y": 6, 
-                    "x": 2
-                }, 
-                "name": "Snakeberry Pi", 
-                "length": 6, 
-                "shout": "", 
-                "squad": "altersaddle:1", 
-                "health": 93, 
-                "id": "gs_4jF38wF9Cwvw8hcVwmxr6QFH"
+                    "x": 7,
+                    "y": 9
+                }
             }
-        ], 
-        "height": 11
+        ],
+        "width": 11,
+        "height": 11,
+        "food": [
+            {
+                "x": 8,
+                "y": 3
+            },
+            {
+                "x": 0,
+                "y": 3
+            }
+        ],
+        "hazards": []
     }
 }
