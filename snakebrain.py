@@ -280,7 +280,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
                     for move, coord in next_coords.items():
-                        if coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0:
+                        if coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0 and not at_wall(coord, board):
                             print(f'Trying to eat {snake["name"]} by going {move}')
                             eating_snakes.append(move)
 
