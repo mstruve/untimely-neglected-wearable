@@ -113,6 +113,12 @@ def get_body_segment_count(coord, move, snakes):
     print(f'{move} body weight is {retval}')
     return retval
 
+def should_choose(moves, squad):
+    if squad:
+        return len(moves) >= 2
+    else:
+        return len(moves) == 2
+
 def line_to_safety(direction, start, board):
     # either straight into a wall or into the safe zone
     retval = 0
@@ -318,11 +324,11 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 smart_moves.append(squeeze_move)
 
     # tiebreakers when there are two paths
-    if len(smart_moves) == 2 and len(board['snakes']) > 1 and not eating_snakes:
+    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")):
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
-            head_distance[move] = get_closest_enemy_head_distance(next_coord, other_snakes)
+            head_distance[move] = get_closest_enemy_head_distance(next_coord, enemy_snakes)
             body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
 
         if min(head_distance.values()) <= 3:

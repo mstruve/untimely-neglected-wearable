@@ -1,5 +1,5 @@
 {
-    "turn": 48, 
+    "turn": 20, 
     "game": {
         "id": "transform", 
         "timeout": 500
@@ -7,82 +7,46 @@
     "you": {
         "body": [
             {
-                "y": 4, 
-                "x": 6
-            }, 
-            {
-                "y": 4, 
-                "x": 5
-            }, 
-            {
-                "y": 3, 
-                "x": 5
-            }, 
-            {
-                "y": 3, 
-                "x": 6
-            }, 
-            {
-                "y": 2, 
-                "x": 6
-            }, 
-            {
-                "y": 2, 
+                "y": 5, 
                 "x": 7
             }, 
             {
-                "y": 1, 
-                "x": 7
-            }, 
-            {
-                "y": 0, 
-                "x": 7
-            }, 
-            {
-                "y": 0, 
+                "y": 5, 
                 "x": 6
             }, 
             {
-                "y": 0, 
+                "y": 6, 
+                "x": 6
+            }, 
+            {
+                "y": 6, 
                 "x": 5
             }, 
             {
-                "y": 0, 
+                "y": 6, 
                 "x": 4
             }, 
             {
-                "y": 0, 
-                "x": 3
-            }, 
-            {
-                "y": 1, 
-                "x": 3
-            }, 
-            {
-                "y": 1, 
+                "y": 7, 
                 "x": 4
-            }, 
-            {
-                "y": 1, 
-                "x": 5
             }
         ], 
         "head": {
-            "y": 4, 
-            "x": 6
+            "y": 5, 
+            "x": 7
         }, 
         "name": "Untimely Neglected Wearable", 
         "shout": "", 
-        "length": 15, 
+        "length": 6, 
         "squad": "altersaddle:1", 
-        "health": 97, 
-        "id": "gs_g3QJW4fCg8cDrb6Hx96Qw9qD"
+        "health": 93, 
+        "id": "gs_8cpJvMCJTvrvtwHwV3Xk9BRK"
     }, 
     "board": {
         "food": [
             {
-                "y": 7, 
-                "x": 1
+                "y": 5, 
+                "x": 10
             }
         ], 
         "width": 11, 
@@ -91,144 +55,94 @@
             {
                 "body": [
                     {
-                        "y": 4, 
+                        "y": 3, 
+                        "x": 9
+                    }, 
+                    {
+                        "y": 2, 
+                        "x": 9
+                    }, 
+                    {
+                        "y": 2, 
+                        "x": 8
+                    }, 
+                    {
+                        "y": 2, 
+                        "x": 7
+                    }, 
+                    {
+                        "y": 1, 
+                        "x": 7
+                    }, 
+                    {
+                        "y": 0, 
+                        "x": 7
+                    }, 
+                    {
+                        "y": 0, 
+                        "x": 8
+                    }, 
+                    {
+                        "y": 0, 
+                        "x": 9
+                    }
+                ], 
+                "head": {
+                    "y": 3, 
+                    "x": 9
+                }, 
+                "name": "Nessegrev-beta", 
+                "length": 8, 
+                "shout": "", 
+                "squad": "nettogrof:1", 
+                "health": 94, 
+                "id": "gs_XHtr6HTghRmkHTyhrRMvSyjb"
+            }, 
+            {
+                "body": [
+                    {
+                        "y": 2, 
+                        "x": 6
+                    }, 
+                    {
+                        "y": 1, 
+                        "x": 6
+                    }, 
+                    {
+                        "y": 1, 
+                        "x": 5
+                    }, 
+                    {
+                        "y": 1, 
+                        "x": 4
+                    }, 
+                    {
+                        "y": 1, 
+                        "x": 3
+                    }, 
+                    {
+                        "y": 1, 
                         "x": 2
                     }, 
                     {
-                        "y": 3, 
+                        "y": 0, 
                         "x": 2
                     }, 
                     {
-                        "y": 3, 
+                        "y": 0, 
                         "x": 1
-                    }, 
-                    {
-                        "y": 3, 
-                        "x": 0
-                    }, 
-                    {
-                        "y": 4, 
-                        "x": 0
                     }
                 ], 
                 "head": {
-                    "y": 4, 
-                    "x": 2
-                }, 
-                "name": "\ud83c\udf4e\ud83c\udf4e\ud83c\udf4e", 
-                "length": 5, 
-                "shout": "", 
-                "squad": "xtagon:1", 
-                "health": 77, 
-                "id": "gs_dtQfTGtckwrX4q9KQYtccbjH"
-            }, 
-            {
-                "body": [
-                    {
-                        "y": 9, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 9, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 9, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 8, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 8, 
-                        "x": 6
-                    }
-                ], 
-                "head": {
-                    "y": 9, 
-                    "x": 7
-                }, 
-                "name": "\ud83c\udf51\ud83c\udf51\ud83c\udf51", 
-                "length": 5, 
-                "shout": "", 
-                "squad": "xtagon:1", 
-                "health": 77, 
-                "id": "gs_G46TpDqST3DRkHhKXXXh8VhB"
-            }, 
-            {
-                "body": [
-                    {
-                        "y": 4, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 4, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 3, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 3, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 2, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 2, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 1, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 5
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 4
-                    }, 
-                    {
-                        "y": 0, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 1, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 1, 
-                        "x": 4
-                    }, 
-                    {
-                        "y": 1, 
-                        "x": 5
-                    }
-                ], 
-                "head": {
-                    "y": 4, 
+                    "y": 2, 
                     "x": 6
                 }, 
-                "name": "Untimely Neglected Wearable", 
-                "length": 15, 
-                "shout": "", 
-                "squad": "altersaddle:1", 
-                "health": 97, 
-                "id": "gs_g3QJW4fCg8cDrb6Hx96Qw9qD"
+                "name": "Nessegrev-beta-ovh", 
+                "length": 8, 
+                "shout": "You gonna die", 
+                "squad": "nettogrof:1", 
+                "health": 94, 
+                "id": "gs_kTVW6cgx9kQcXKQvhTmCcFBf"
             }, 
             {
                 "body": [
@@ -238,58 +152,22 @@
                     }, 
                     {
                         "y": 5, 
-                        "x": 8
-                    }, 
-                    {
-                        "y": 6, 
-                        "x": 8
-                    }, 
-                    {
-                        "y": 7, 
-                        "x": 8
-                    }, 
-                    {
-                        "y": 7, 
-                        "x": 7
-                    }, 
-                    {
-                        "y": 6, 
-                        "x": 7
+                        "x": 6
                     }, 
                     {
                         "y": 6, 
                         "x": 6
                     }, 
                     {
-                        "y": 5, 
-                        "x": 6
-                    }, 
-                    {
-                        "y": 5, 
+                        "y": 6, 
                         "x": 5
                     }, 
                     {
-                        "y": 5, 
+                        "y": 6, 
                         "x": 4
                     }, 
                     {
-                        "y": 4, 
-                        "x": 4
-                    }, 
-                    {
-                        "y": 4, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 5, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 6, 
-                        "x": 3
-                    }, 
-                    {
-                        "y": 6, 
+                        "y": 7, 
                         "x": 4
                     }
                 ], 
@@ -297,12 +175,50 @@
                     "y": 5, 
                     "x": 7
                 }, 
-                "name": "Snakeberry Pi", 
-                "length": 15, 
+                "name": "Untimely Neglected Wearable", 
+                "length": 6, 
                 "shout": "", 
                 "squad": "altersaddle:1", 
-                "health": 97, 
-                "id": "gs_J9tpXfRrPTXjctV7mmt3SpY3"
+                "health": 93, 
+                "id": "gs_8cpJvMCJTvrvtwHwV3Xk9BRK"
+            }, 
+            {
+                "body": [
+                    {
+                        "y": 6, 
+                        "x": 2
+                    }, 
+                    {
+                        "y": 6, 
+                        "x": 1
+                    }, 
+                    {
+                        "y": 7, 
+                        "x": 1
+                    }, 
+                    {
+                        "y": 8, 
+                        "x": 1
+                    }, 
+                    {
+                        "y": 9, 
+                        "x": 1
+                    }, 
+                    {
+                        "y": 9, 
+                        "x": 2
+                    }
+                ], 
+                "head": {
+                    "y": 6, 
+                    "x": 2
+                }, 
+                "name": "Snakeberry Pi", 
+                "length": 6, 
+                "shout": "", 
+                "squad": "altersaddle:1", 
+                "health": 93, 
+                "id": "gs_4jF38wF9Cwvw8hcVwmxr6QFH"
             }
         ], 
         "height": 11
