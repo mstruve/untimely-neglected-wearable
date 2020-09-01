@@ -280,7 +280,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
                     for move, coord in next_coords.items():
-                        if coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0 and not at_wall(coord, board):
+                        if coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0 and not at_wall(coord, board) and len(safe_coords[move]) > my_snake['length']:
                             print(f'Trying to eat {snake["name"]} by going {move}')
                             eating_snakes.append(move)
 
@@ -390,6 +390,10 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
         if food_moves:
             closest_food_distance = min(food_moves.values())
+            food_considerations = other_snakes
+            if squadmates and my_snake['name'] == min([snake['name'] for snake in board['snakes'] if snake['squad'] == my_snake['squad']]):
+                print("short snake takes the food")
+                food_considerations = enemy_snakes
             for path in food_moves.keys():
                 if food_moves[path] <= closest_food_distance:
                     print(f"safe food towards {path} is {closest_food_distance} or less")
@@ -399,7 +403,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     for food in food_targets:
                         distance_to_me = get_minimum_moves(food, [my_snake["head"]])
                         if distance_to_me == food_moves[path] + 1:
-                            for snake in other_snakes:
+                            for snake in food_considerations:
                                 if get_minimum_moves(food, [snake["head"]]) <= distance_to_me and get_minimum_moves(snake["head"], [my_snake["head"]]) <= 4 and snake["length"] >= my_snake["length"]:
                                     # Don't
                                     print(f'Avoiding food towards {path} because of {snake["name"]}')
