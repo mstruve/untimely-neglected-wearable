@@ -235,9 +235,11 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         explore_edge = [guess_coord]
         all_coords = [guess_coord]
         next_explore = []
+        explore_step = 0
 
         for segments in body[:-1]:
             next_explore.clear()
+            explore_step += 1
             for explore in explore_edge:
                 safe = get_safe_moves(all_moves, [explore], board, squadmates, my_snake)
                 #print(f"Safe moves: {safe}")
@@ -245,7 +247,16 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     guess_coord_next = get_next(explore, safe_move)
                     if guess_coord_next not in all_coords:
                         next_explore.append(guess_coord_next)
-
+                
+                # Consider how other snakes move
+                # TODO: Handle when other snakes could eat
+                snake_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, enemy_snakes)]
+                if snake_collide:
+                    for coord in snake_collide:
+                        for snake in enemy_snakes:
+                            if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]):
+                                start_segment = snake["body"].index(coord)
+                                all_coords += snake["body"][start_segment:]
                 all_coords += next_explore.copy() 
                 all_coords.append(explore)
             explore_edge = next_explore.copy()
@@ -330,8 +341,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 print(f'squeezing into {squeeze_move} {safe_coords}')
                 smart_moves.append(squeeze_move)
 
-    # tiebreakers when there are two paths
-    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")):
+    # tiebreakers when there are two paths, three in squads.  Skop if begin of game and we're short
+    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and len(my_snake['body']) > 3:
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
