@@ -257,6 +257,12 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                             if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]):
                                 start_segment = snake["body"].index(coord)
                                 all_coords += snake["body"][start_segment:]
+                self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
+                if self_collide:
+                    for coord in self_collide:
+                        if coord in my_snake['body'] and my_snake['body'].index(coord) + explore_step >= len(my_snake['body']):
+                            start_segment = my_snake["body"].index(coord)
+                            all_coords += my_snake['body'][start_segment:]
                 all_coords += next_explore.copy() 
                 all_coords.append(explore)
             explore_edge = next_explore.copy()
