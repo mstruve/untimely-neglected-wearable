@@ -384,7 +384,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     # Seek food if there are other snakes larger than us, or if health is low
     if len(smart_moves) > 1 and board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
         print("Hungry!")
-        food_choices = safe_coords.keys() 
+        food_choices = smart_moves 
         food_moves = {}
         closest_food = []
         greed_moves = []
@@ -394,6 +394,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         if not food_targets:
             food_targets = board["food"]
             print (f'no food outside hazards, now considering {food_targets}')
+
+        if my_snake['health'] < hunger_threshold:
+            food_choices = safe_coords.keys()
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in food_targets):
