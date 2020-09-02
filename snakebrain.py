@@ -395,7 +395,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             food_targets = board["food"]
             print (f'no food outside hazards, now considering {food_targets}')
 
-        if my_snake['health'] < hunger_threshold:
+        if my_snake['health'] < hunger_threshold or my_snake["length"] < board['width']:
             food_choices = safe_coords.keys()
 
         for path in food_choices:
