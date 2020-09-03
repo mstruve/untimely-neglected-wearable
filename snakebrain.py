@@ -51,6 +51,16 @@ def avoid_walls(future_head, board_width, board_height):
 
     return result
 
+def avoid_gutter(future_head, board_width, board_height):
+    result = True
+
+    x = int(future_head["x"])
+    y = int(future_head["y"])
+
+    if x < 1 or y < 1 or x >= board_width - 1 or y >= board_height - 1:
+        result = False
+    return result
+
 def avoid_snakes(future_head, snake_bodies):
     for snake in snake_bodies:
         if future_head in snake["body"][:-1]:
@@ -326,6 +336,13 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if test_move == snake["body"][-1] and test_move not in body[:-1] and not any(coord in board["food"] for coord in get_all_moves(snake["body"][0])):
                         smart_moves.append(move)
 
+    # Avoid the gutter when we're longer than the board width
+    if smart_moves and my_snake["length"] >= board["width"] - 2:
+        gutter_avoid = [move for move in smart_moves if avoid_gutter(get_next(body[0], move), board["width"], board["height"])]
+        if gutter_avoid:
+            print(f"Staying out of the gutter by going {gutter_avoid} instead of {smart_moves}")
+            smart_moves = gutter_avoid
+        
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
         if other_snakes:
@@ -347,8 +364,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 print(f'squeezing into {squeeze_move} {safe_coords}')
                 smart_moves.append(squeeze_move)
 
-    # tiebreakers when there are two paths, three in squads.  Skop if begin of game and we're short
-    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and len(my_snake['body']) > 3:
+    # tiebreakers when there are two paths, three in squads.  Skip if begin of game and we're short
+    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and my_snake['length'] > 3:
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
