@@ -441,8 +441,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     # see if we're the closest to the food
                     #if head_distance.get(path) and food_moves[path] < head_distance[path]:
                     for food in food_targets:
-                        distance_to_me = get_minimum_moves(food, [my_snake["head"]])
-                        if distance_to_me == food_moves[path] + 1:
+                        distance_to_me = get_minimum_moves(food, [get_next(my_snake["head"], path)])
+                        if distance_to_me == food_moves[path]:
                             for snake in food_considerations:
                                 if get_minimum_moves(food, [snake["head"]]) <= distance_to_me and get_minimum_moves(snake["head"], [my_snake["head"]]) <= 4 and snake["length"] >= my_snake["length"]:
                                     # Don't
