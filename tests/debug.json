@@ -3,115 +3,237 @@
         "id": "transform",
         "timeout": 500
     },
-    "turn": 34,
+    "turn": 80,
     "you": {
-        "id": "gs_jhq3WrkyjKwwKqmKPPhwdhH8",
+        "id": "gs_p7SG4pt7WwrkWvqqBhMkBQDR",
         "name": "Untimely Neglected Wearable",
-        "health": 72,
+        "health": 92,
         "body": [
             {
-                "x": 1,
-                "y": 1
-            },
-            {
-                "x": 2,
-                "y": 1
-            },
-            {
-                "x": 3,
-                "y": 1
+                "x": 4,
+                "y": 8
             },
             {
                 "x": 4,
-                "y": 1
+                "y": 7
+            },
+            {
+                "x": 3,
+                "y": 7
+            },
+            {
+                "x": 2,
+                "y": 7
+            },
+            {
+                "x": 2,
+                "y": 6
+            },
+            {
+                "x": 2,
+                "y": 5
+            },
+            {
+                "x": 2,
+                "y": 4
+            },
+            {
+                "x": 1,
+                "y": 4
+            },
+            {
+                "x": 1,
+                "y": 5
             }
         ],
         "shout": "",
         "squad": "",
-        "length": 4,
+        "length": 9,
         "head": {
-            "x": 1,
-            "y": 1
+            "x": 4,
+            "y": 8
         }
     },
     "board": {
         "snakes": [
             {
-                "id": "gs_JmSyQT6vHTmKXMwjJfJV7FtT",
-                "name": "\u03c0-thon",
-                "health": 89,
+                "id": "gs_HhPcTTpkpYpRDxxrSf937FwJ",
+                "name": "Jah-Snake",
+                "health": 98,
                 "body": [
                     {
-                        "x": 7,
-                        "y": 3
+                        "x": 10,
+                        "y": 8
                     },
                     {
-                        "x": 6,
-                        "y": 3
+                        "x": 10,
+                        "y": 9
                     },
                     {
-                        "x": 6,
+                        "x": 10,
+                        "y": 10
+                    },
+                    {
+                        "x": 9,
+                        "y": 10
+                    },
+                    {
+                        "x": 9,
+                        "y": 9
+                    },
+                    {
+                        "x": 9,
+                        "y": 8
+                    },
+                    {
+                        "x": 9,
+                        "y": 7
+                    },
+                    {
+                        "x": 9,
+                        "y": 6
+                    },
+                    {
+                        "x": 9,
+                        "y": 5
+                    },
+                    {
+                        "x": 9,
                         "y": 4
                     },
                     {
-                        "x": 6,
+                        "x": 9,
+                        "y": 3
+                    }
+                ],
+                "shout": "STRAT: Initial movefood at (4, 2) Strat: foodfood at (5, 5) Strat: foodfood at (5, 5) Strat: foodfood at (5, 5) Strat: foodfood at (5, 5) Strat: foodfood at (3, 3) Strat: foodfood at (3, 3) Strat: foodfood at (3, 3) Strat: foodfood at (3, 3) Strat: foodfoo",
+                "squad": "",
+                "length": 11,
+                "head": {
+                    "x": 10,
+                    "y": 8
+                }
+            },
+            {
+                "id": "gs_M6GDP8d6kvxJVfkD3pggGX9Y",
+                "name": "UVic AI Club",
+                "health": 48,
+                "body": [
+                    {
+                        "x": 3,
+                        "y": 3
+                    },
+                    {
+                        "x": 4,
+                        "y": 3
+                    },
+                    {
+                        "x": 5,
+                        "y": 3
+                    },
+                    {
+                        "x": 5,
+                        "y": 4
+                    },
+                    {
+                        "x": 5,
                         "y": 5
                     },
                     {
-                        "x": 7,
+                        "x": 4,
                         "y": 5
-                    },
-                    {
-                        "x": 7,
-                        "y": 6
                     }
                 ],
                 "shout": "",
                 "squad": "",
                 "length": 6,
                 "head": {
-                    "x": 7,
+                    "x": 3,
                     "y": 3
                 }
             },
             {
-                "id": "gs_jhq3WrkyjKwwKqmKPPhwdhH8",
+                "id": "gs_6mD4MCkPjH9dKVxdFWtQSf4G",
+                "name": "Ereptile Disfunction",
+                "health": 92,
+                "body": [
+                    {
+                        "x": 1,
+                        "y": 7
+                    },
+                    {
+                        "x": 1,
+                        "y": 8
+                    },
+                    {
+                        "x": 2,
+                        "y": 8
+                    },
+                    {
+                        "x": 2,
+                        "y": 9
+                    },
+                    {
+                        "x": 3,
+                        "y": 9
+                    },
+                    {
+                        "x": 3,
+                        "y": 10
+                    },
+                    {
+                        "x": 2,
+                        "y": 10
+                    },
+                    {
+                        "x": 1,
+                        "y": 10
+                    },
+                    {
+                        "x": 1,
+                        "y": 9
+                    }
+                ],
+                "shout": "",
+                "squad": "",
+                "length": 9,
+                "head": {
+                    "x": 1,
+                    "y": 7
+                }
+            },
+            {
+                "id": "gs_p7SG4pt7WwrkWvqqBhMkBQDR",
                 "name": "Untimely Neglected Wearable",
-                "health": 72,
+                "health": 92,
                 "body": [
                     {
-                        "x": 1,
-                        "y": 1
-                    },
-                    {
-                        "x": 2,
-                        "y": 1
-                    },
-                    {
-                        "x": 3,
-                        "y": 1
+                        "x": 4,
+                        "y": 8
                     },
                     {
                         "x": 4,
-                        "y": 1
-                    }
-                ],
-                "shout": "",
-                "squad": "",
-                "length": 4,
-                "head": {
-                    "x": 1,
-                    "y": 1
-                }
-            },
-            {
-                "id": "gs_qt9XFdhWHVH97kdcxRBwHVbW",
-                "name": "Speak Softly and Write Lots of Code",
-                "health": 95,
-                "body": [
+                        "y": 7
+                    },
                     {
-                        "x": 1,
-                        "y": 3
+                        "x": 3,
+                        "y": 7
+                    },
+                    {
+                        "x": 2,
+                        "y": 7
+                    },
+                    {
+                        "x": 2,
+                        "y": 6
+                    },
+                    {
+                        "x": 2,
+                        "y": 5
+                    },
+                    {
+                        "x": 2,
+                        "y": 4
                     },
                     {
                         "x": 1,
@@ -120,64 +242,14 @@
                     {
                         "x": 1,
                         "y": 5
-                    },
-                    {
-                        "x": 2,
-                        "y": 5
-                    },
-                    {
-                        "x": 3,
-                        "y": 5
-                    },
-                    {
-                        "x": 4,
-                        "y": 5
-                    },
-                    {
-                        "x": 4,
-                        "y": 4
                     }
                 ],
                 "shout": "",
                 "squad": "",
-                "length": 7,
+                "length": 9,
                 "head": {
-                    "x": 1,
-                    "y": 3
-                }
-            },
-            {
-                "id": "gs_RS8JG7hfXg8XfcJRfhScdCJY",
-                "name": "Bear Fish Duck Human Snake",
-                "health": 80,
-                "body": [
-                    {
-                        "x": 2,
-                        "y": 2
-                    },
-                    {
-                        "x": 3,
-                        "y": 2
-                    },
-                    {
-                        "x": 4,
-                        "y": 2
-                    },
-                    {
-                        "x": 5,
-                        "y": 2
-                    },
-                    {
-                        "x": 6,
-                        "y": 2
-                    }
-                ],
-                "shout": "",
-                "squad": "",
-                "length": 5,
-                "head": {
-                    "x": 2,
-                    "y": 2
+                    "x": 4,
+                    "y": 8
                 }
             }
         ],
@@ -185,12 +257,12 @@
         "height": 11,
         "food": [
             {
-                "x": 1,
-                "y": 2
+                "x": 0,
+                "y": 3
             },
             {
-                "x": 9,
-                "y": 2
+                "x": 3,
+                "y": 8
             }
         ],
         "hazards": []

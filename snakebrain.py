@@ -448,7 +448,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                     # Don't
                                     print(f'Avoiding food towards {path} because of {snake["name"]}')
                                     avoid_moves.append(path)
-                    if not (path in avoid_moves):
+                    if not (path in avoid_moves) and (path in smart_moves):
                         greed_moves.append(path)
         else:
             for path in food_choices:
