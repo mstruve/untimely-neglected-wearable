@@ -426,7 +426,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
         for path in food_choices:
             if any(food in safe_coords[path] for food in food_targets):
-                food_moves[path] = get_minimum_moves(get_next(body[0], path), food_targets)
+                food_moves[path] = get_minimum_moves(get_next(body[0], path), [food for food in food_targets if food in safe_coords[path]])
 
         if food_moves:
             closest_food_distance = min(food_moves.values())
