@@ -231,6 +231,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     # enemy_threats = [snake for snake in other_snakes if snake["length"] >= my_sname["length"]]
     eating_snakes = []
     gutter_snakes = []
+    gutter_food = []
     safe_coords = {}
     head_distance = {}
     next_coords = {}
@@ -339,8 +340,12 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if test_move == snake["body"][-1] and test_move not in body[:-1] and not any(coord in board["food"] for coord in get_all_moves(snake["body"][0])):
                         smart_moves.append(move)
 
+    # Early hunger check
+    if board['food'] and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
+        gutter_food = [food for food in board['food'] if not avoid_gutter(food, board['width'], board['height'])]
+
     # Avoid the gutter when we're longer than the board width
-    if smart_moves and not gutter_snakes and my_snake["length"] >= board["width"] - 2:
+    if smart_moves and not gutter_snakes and not gutter_food and my_snake["length"] >= board["width"] - 2:
         gutter_avoid = [move for move in smart_moves if avoid_gutter(get_next(body[0], move), board["width"], board["height"])]
         if gutter_avoid:
             print(f"Staying out of the gutter by going {gutter_avoid} instead of {smart_moves}")
