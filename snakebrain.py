@@ -306,7 +306,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         eating_snakes.append(move)
             elif avoid_gutter(enemy_must, board['width'], board['height']):
                 gutter_snakes.append(snake)
-        elif len(enemy_options) >= 2:
+        elif len(enemy_options) == 2:
             for enemy_move in enemy_options:
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
