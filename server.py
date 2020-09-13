@@ -1,8 +1,12 @@
 import os
+import io
+from contextlib import redirect_stdout
 import random
 import time
+from json import loads
 
 import snakebrain
+from tests.transform import transform_json
 
 import cherrypy
 #import cProfile
@@ -95,6 +99,30 @@ class Battlesnake(object):
 
         self.log("END")
         return "ok"
+
+    @cherrypy.expose
+    def debug(self, boardstate = None):
+        result = ""
+        output = ""
+
+        html_begin = '<html><body><form method="POST"><textarea name="boardstate" rows="16" cols="120">'
+        html_middle = '</textarea><br><input type="submit"> <input type="reset"></form>'
+        html_end = '</body></html>'
+        if boardstate:
+            # get result and stdout
+            transform_output = io.StringIO()
+            with redirect_stdout(transform_output):
+                transform_json(boardstate)
+            move_param = transform_output.getvalue()
+            request = cherrypy.serving.request
+            request.json = loads(move_param)
+
+            move_output = io.StringIO()
+            with redirect_stdout(move_output):
+                result = self.move()
+            output = move_output.getvalue()
+            
+        return(f'{html_begin}{boardstate}{html_middle}<hr>{result}<br><textarea rows="16" cols="120">{output}</textarea>{html_end}')
 
     def log(self, message):
         # output message iwth globals
