@@ -307,6 +307,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             elif avoid_gutter(enemy_must, board['width'], board['height']):
                 gutter_snakes.append(snake)
         elif len(enemy_options) == 2:
+            # TODO: consider if this will corner us - do what-if when enemy chooses to avoid us
             for enemy_move in enemy_options:
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
@@ -340,15 +341,15 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if test_move == snake["body"][-1] and test_move not in body[:-1] and not any(coord in board["food"] for coord in get_all_moves(snake["body"][0])):
                         smart_moves.append(move)
 
-    # Early hunger check
+    # Early hunger check to determine if the closest food is in a dangerous place
     if board['food'] and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
-        gutter_food = [food for food in board['food'] if not avoid_gutter(food, board['width'], board['height'])]
+        gutter_food = [food for food in board['food'] if not avoid_gutter(food, board['width'], board['height']) and get_minimum_moves(my_snake['head'], [food]) < 2]
 
     # Avoid the gutter when we're longer than the board width
     if smart_moves and not gutter_snakes and not gutter_food and my_snake["length"] >= board["width"] - 2:
         gutter_avoid = [move for move in smart_moves if avoid_gutter(get_next(body[0], move), board["width"], board["height"])]
         if gutter_avoid:
-            print(f"Staying out of the gutter by going {gutter_avoid} instead of {smart_moves}")
+            print(f"Avoiding gutter by going {gutter_avoid} instead of {smart_moves}")
             smart_moves = gutter_avoid
         
     # No clear path, try to fit ourselves in the longest one
@@ -373,6 +374,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 smart_moves.append(squeeze_move)
 
     # tiebreakers when there are two paths, three in squads.  Skip if begin of game and we're short
+    # TODO: add alternate branch if we're beside food and that food would make us larger than nearest threat
     if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and my_snake['length'] > 3:
         body_weight = {}
         for move in smart_moves:
@@ -396,8 +398,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
                     print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
                 else:
-                    smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
-                    print(f'choosing {smart_moves} to avoid heads {head_distance}')
+                    if len(smart_moves) > 1:
+                        smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
+                        print(f'choosing {smart_moves} to avoid heads {head_distance}')
                     if len(smart_moves) > 1 and at_wall(my_snake["head"], board):
                         smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
                         print(f'choosing {smart_moves} to bump self off wall')
@@ -412,8 +415,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
 
-    # Seek food if there are other snakes larger than us, or if health is low
-    if len(smart_moves) > 1 and board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] >= my_snake["length"] for snake in enemy_snakes)):
+    # Seek food if there are other snakes porentially larger than us, or if health is low
+    if len(smart_moves) > 1 and board['food'] and not eating_snakes and (my_snake["health"] < hunger_threshold or any(snake["length"] + len(board['food']) >= my_snake["length"] for snake in enemy_snakes)):
         print("Hungry!")
         food_choices = smart_moves 
         food_moves = {}
