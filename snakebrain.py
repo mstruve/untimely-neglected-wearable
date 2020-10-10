@@ -248,13 +248,15 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         next_explore = []
         # start at 1 because snakes move forward
         explore_step = 1
+        eating_offset = 0
 
         for segments in body[:-1]:
             next_explore.clear()
             explore_step += 1
             for explore in explore_edge:
+                if explore in board['food']:
+                    eating_offset += 1
                 safe = get_safe_moves(all_moves, [explore], board, squadmates, my_snake)
-                #print(f"Safe moves: {safe}")
                 for safe_move in safe:
                     guess_coord_next = get_next(explore, safe_move)
                     if guess_coord_next not in all_coords:
@@ -272,7 +274,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
                 if self_collide:
                     for coord in self_collide:
-                        if coord in my_snake['body'] and my_snake['body'].index(coord) + explore_step >= len(my_snake['body']):
+                        if coord in my_snake['body'] and my_snake['body'].index(coord) + explore_step >= len(my_snake['body']) + eating_offset:
                             start_segment = my_snake["body"].index(coord)
                             all_coords += my_snake['body'][start_segment:]
                 all_coords += next_explore.copy() 
