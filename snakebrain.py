@@ -240,14 +240,14 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
     # We know these directions are safe... for now
     for guess in safe_moves:
-        #print(f"exploring {guess}")
         safe_coords[guess] = []
         guess_coord = get_next(body[0], guess)
         next_coords[guess] = guess_coord
         explore_edge = [guess_coord]
         all_coords = [guess_coord]
         next_explore = []
-        explore_step = 0
+        # start at 1 because snakes move forward
+        explore_step = 1
 
         for segments in body[:-1]:
             next_explore.clear()
