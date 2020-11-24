@@ -51,3 +51,4 @@ def transform(boardstate):
 if __name__ == '__main__':
     with open('./boardstate.raw') as f:
         boardstate = json.load(f)
+        #transform(boardstate)

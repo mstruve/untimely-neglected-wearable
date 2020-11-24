@@ -228,6 +228,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         enemy_snakes = other_snakes
     safe_moves = get_safe_moves(possible_moves, body, board, squadmates, my_snake)
 
+    tron_mode = len(board['food']) + sum([snake['length'] for snake in board['snakes']]) >= board['width'] * board['height']
+
     # enemy_threats = [snake for snake in other_snakes if snake["length"] >= my_sname["length"]]
     eating_snakes = []
     gutter_snakes = []
@@ -262,21 +264,25 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if guess_coord_next not in all_coords:
                         next_explore.append(guess_coord_next)
                 
-                # Consider how other snakes move
-                # TODO: Handle when other snakes could eat
-                snake_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, enemy_snakes)]
-                if snake_collide:
-                    for coord in snake_collide:
-                        for snake in enemy_snakes:
-                            if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]):
-                                start_segment = snake["body"].index(coord)
-                                all_coords += snake["body"][start_segment:]
-                self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
-                if self_collide:
-                    for coord in self_collide:
-                        if coord in my_snake['body'] and my_snake['body'].index(coord) + explore_step >= len(my_snake['body']) + eating_offset:
-                            start_segment = my_snake["body"].index(coord)
-                            all_coords += my_snake['body'][start_segment:]
+                if not tron_mode:
+                    # Consider how other snakes move
+                    # TODO: Handle when other snakes could eat
+                    snake_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, enemy_snakes)]
+                    if snake_collide:
+                        for coord in snake_collide:
+                            for snake in enemy_snakes:
+                                if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]):
+                                    start_segment = snake["body"].index(coord)
+                                    all_coords += snake["body"][start_segment:]
+                                elif coord == snake['head'] and snake['length'] >= my_snake['length']:
+                                    print(f"Bumping heads with {snake['name']} at step {explore_step}")
+
+                    self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
+                    if self_collide:
+                        for coord in self_collide:
+                            if coord in my_snake['body'] and my_snake['body'].index(coord) + explore_step >= len(my_snake['body']) + eating_offset:
+                                start_segment = my_snake["body"].index(coord)
+                                all_coords += my_snake['body'][start_segment:]
                 all_coords += next_explore.copy() 
                 all_coords.append(explore)
             explore_edge = next_explore.copy()
@@ -352,7 +358,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         gutter_avoid = [move for move in smart_moves if avoid_gutter(get_next(body[0], move), board["width"], board["height"])]
         if gutter_avoid:
             print(f"Avoiding gutter by going {gutter_avoid} instead of {smart_moves}")
-            smart_moves = gutter_avoid
+            #smart_moves = gutter_avoid
         
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
