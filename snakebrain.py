@@ -251,6 +251,16 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         # start at 1 because snakes move forward
         explore_step = 1
         eating_offset = 0
+        enemy_offset = {}
+
+        for snake in enemy_snakes:
+            if any(eat_coord in get_all_moves(snake['head']) for eat_coord in board['food']):
+                print(f"{snake['name']} could eat")
+                enemy_offset[snake['id']] = 1
+            else:
+                enemy_offset[snake['id']] = 0
+
+            
 
         for segments in body[:-1]:
             next_explore.clear()
@@ -271,7 +281,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     if snake_collide:
                         for coord in snake_collide:
                             for snake in enemy_snakes:
-                                if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]):
+                                if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]) + enemy_offset[snake['id']]:
                                     start_segment = snake["body"].index(coord)
                                     all_coords += snake["body"][start_segment:]
                                 elif coord == snake['head'] and snake['length'] >= my_snake['length']:
