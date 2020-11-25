@@ -387,7 +387,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         body_weight = {}
         for move in smart_moves:
             next_coord = get_next(body[0], move)
-            head_distance[move] = get_closest_enemy_head_distance(next_coord, enemy_snakes)
+            head_distance[move] = get_closest_enemy_head_distance(next_coord, [snake for snake in enemy_snakes if snake['length'] >= my_snake['length']])
             body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
 
         if min(head_distance.values()) <= 3:
