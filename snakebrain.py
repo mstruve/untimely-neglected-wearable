@@ -347,7 +347,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             tail_neighbors.append(get_next(body[-1], tail_safe_direction))
 
         for path in safe_coords.keys():
-            if any(coord in safe_coords[path] for coord in tail_neighbors):
+            if any(coord in safe_coords[path] for coord in tail_neighbors) or body[-1] in safe_coords[path]:
                 print(f"Chasing tail {path}!")
                 smart_moves.append(path)
         if not smart_moves:
