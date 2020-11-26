@@ -373,7 +373,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         gutter_avoid = [move for move in smart_moves if avoid_gutter(get_next(body[0], move), board["width"], board["height"])]
         if gutter_avoid:
             print(f"Avoiding gutter by going {gutter_avoid} instead of {smart_moves}")
-            #smart_moves = gutter_avoid
+            smart_moves = gutter_avoid
         
     # No clear path, try to fit ourselves in the longest one
     if safe_coords and not smart_moves and my_snake['head'] not in board ['hazards']:
