@@ -284,8 +284,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                     start_segment = snake["body"].index(coord)
                                     all_coords += snake["body"][start_segment:]
                                 elif coord == snake['head']: # and snake['length'] >= my_snake['length']:
-                                    print(f"Bumping heads with {snake['name']} at step {explore_step}")
-                                    if explore_step > 1 and len(explore_edge) == 1:
+                                    print(f"Bumping heads with {snake['name']} at step {explore_step} {explore_edge}")
+                                    if explore_step > 2 and len(explore_edge) == 1:
                                         print(f"{guess} leads to a possible choke point")
                                         choke_moves.append(guess)
 
@@ -480,6 +480,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                     # Don't
                                     print(f'Avoiding food towards {path} because {snake["name"]} is {get_minimum_moves(snake["head"], [test_coord])} away')
                                     avoid_moves.append(path)
+                    print(f"avoid_moves {avoid_moves} smart_moves {smart_moves}")
                     if not (path in avoid_moves) and (path in smart_moves):
                         greed_moves.append(path)
         else:
