@@ -237,8 +237,17 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     safe_coords = {}
     head_distance = {}
     next_coords = {}
+    choke_moves = []
 
     hunger_threshold = 35
+    enemy_offset = {}
+
+    for snake in enemy_snakes:
+        if any(eat_coord in get_all_moves(snake['head']) for eat_coord in board['food']):
+            print(f"{snake['name']} could eat")
+            enemy_offset[snake['id']] = 1
+        else:
+            enemy_offset[snake['id']] = 0
 
     # We know these directions are safe... for now
     for guess in safe_moves:
@@ -251,16 +260,6 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         # start at 1 because snakes move forward
         explore_step = 1
         eating_offset = 0
-        enemy_offset = {}
-
-        for snake in enemy_snakes:
-            if any(eat_coord in get_all_moves(snake['head']) for eat_coord in board['food']):
-                print(f"{snake['name']} could eat")
-                enemy_offset[snake['id']] = 1
-            else:
-                enemy_offset[snake['id']] = 0
-
-            
 
         for segments in body[:-1]:
             next_explore.clear()
@@ -284,8 +283,11 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                 if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]) + enemy_offset[snake['id']]:
                                     start_segment = snake["body"].index(coord)
                                     all_coords += snake["body"][start_segment:]
-                                elif coord == snake['head'] and snake['length'] >= my_snake['length']:
+                                elif coord == snake['head']: # and snake['length'] >= my_snake['length']:
                                     print(f"Bumping heads with {snake['name']} at step {explore_step}")
+                                    if explore_step > 1 and len(explore_edge) == 1:
+                                        print(f"{guess} leads to a possible choke point")
+                                        choke_moves.append(guess)
 
                     self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
                     if self_collide:
@@ -309,6 +311,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 avoid_hazards(guess_coord, board["hazards"])
             ):
             smart_moves.append(path)
+
+    if choke_moves and smart_moves:
+        smart_moves = [move for move in smart_moves if move not in choke_moves]
     
     # check if other snakes are being forced to move into a square we can occupy.  
     # We don't need to determine if this is a safe move since we can use the freed-up
