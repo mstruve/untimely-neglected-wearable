@@ -2,29 +2,35 @@
 
 This is an implementation of the [Battlesnake API](https://docs.battlesnake.com/references/api). 
 
-It is designed to be stateless - a decision is made based on the board state provided on request.
+It is designed to be:
+- Stateless - a decision is made based on the board state provided on request.
+- Reusable - all game modes are accounted for in one code base.
+- Performant - enough to run on a low-power device.  It could be much better!
 
 It has code to:
 
 - Avoid the edges of the map.
 - Avoid collisions with other snakes on the board.
-- Avoid entering spaces too small to fit.
-- Avoid hazard spaces unless it's the only spot for food
-- Seek food when other snakes are larger, and avoid it if we're the largest.
+- Avoid entering spaces too small to fit, unless space would be vacated by exiting snake bodies.
+- Avoid hazard spaces unless it's where our food is.
+- Seek food when other snakes are larger, and avoid it when we don't need it.
 - Blindly find food when very low in health.
-- Take a certain winning move if the other snake has one available move
-- Take a drafting larger snake to a wall, just to see what happens
+- Take a certain winning move if the other snake has one available move.
+- Take a drafting larger snake to a wall, just to see what happens.
+- Avoid paths that could be closed due to other snake movement.
+- Accept a board state and return debugging output for a single move.
 
 ### Next steps
 
 - Improve hazard code to reduce time spent in hazards.
 - Improve tail chasing code to chase enemy tails.
-- Improve squeeze code to determine if an escape route would open due to a tail
+- Proper, repeatable test suites!
 
 ### Possible refactoring
 
-- Improve pathfinder code to use a multi-node tree
-- Optimize to run on the Raspberry Pi
+- A better idling strategy than choosing a random move.
+- Improve pathfinder code to use a multi-node tree, to collect more info as we seek a 'best' path.
+- Optimize to run better on the Raspberry Pi.
 
 ### Technologies Used
 

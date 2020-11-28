@@ -282,6 +282,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                             for snake in enemy_snakes:
                                 if coord in snake["body"] and snake["body"].index(coord) + explore_step >= len(snake["body"]) + enemy_offset[snake['id']]:
                                     start_segment = snake["body"].index(coord)
+                                    print(f'we intersect with {snake["name"]} at position {start_segment} step {explore_step}')
                                     all_coords += snake["body"][start_segment:]
                                 elif coord == snake['head']: # and snake['length'] >= my_snake['length']:
                                     print(f"Bumping heads with {snake['name']} at step {explore_step} {explore_edge}")
@@ -303,8 +304,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
     for path in safe_coords.keys():
         guess_coord = get_next(body[0], path)
-        #print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
-        # TODO: also consider tails that are overlapping bodies, but more than 1 step away
+        print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
+        print(f"{safe_coords[path]}")
+        # TODO: also consider tails that are overlapping bodies, but more than 1 step awa#y
         if ((len(safe_coords[path]) >= len(body) or 
                 any(snake["body"][-1] in safe_coords[path] for snake in board["snakes"])) and 
                 avoid_consumption(guess_coord, board["snakes"], my_snake) and
