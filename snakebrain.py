@@ -264,6 +264,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         for segments in body[:-1]:
             next_explore.clear()
             explore_step += 1
+            print(f"Step {explore_step} exploring {explore_edge}")
             for explore in explore_edge:
                 if explore in board['food']:
                     eating_offset += 1
@@ -286,7 +287,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                     all_coords += snake["body"][start_segment:]
                                 elif coord == snake['head']: # and snake['length'] >= my_snake['length']:
                                     print(f"Bumping heads with {snake['name']} at step {explore_step} {explore_edge}")
-                                    if explore_step > 2 and len(explore_edge) == 1:
+                                    unexplored = [coord for coord in explore_edge if coord not in all_coords]
+                                    print(f"safe: {safe} {next_explore}")
+                                    if explore_step > 2 and (len(explore_edge) == 1 or len(next_explore) <= 1):
                                         print(f"{guess} leads to a possible choke point")
                                         choke_moves.append(guess)
 
