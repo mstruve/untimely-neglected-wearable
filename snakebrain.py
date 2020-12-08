@@ -123,6 +123,20 @@ def get_body_segment_count(coord, move, snakes):
     print(f'{move} body weight is {retval}')
     return retval
 
+def get_future_head_positions(body, turns, board):
+    turn = 0
+    explores = {}
+    explores[0] = [body[0]]
+    while turn < turns:
+        turn += 1
+        explores[turn] = []
+        for test in explores[turn-1]:
+            next_paths = get_safe_moves(["left","right","up","down"],[test],board)
+            for path in next_paths:
+                explores[turn].append(get_next(test, path))
+
+    return explores[turns]
+
 def should_choose(moves, squad):
     if squad:
         return len(moves) >= 2
@@ -237,7 +251,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     safe_coords = {}
     head_distance = {}
     next_coords = {}
-    choke_moves = []
+    choke_moves = {}
+    collision_threats = []
+    collision_targets = {}
 
     hunger_threshold = 35
     enemy_offset = {}
@@ -287,11 +303,15 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                                     all_coords += snake["body"][start_segment:]
                                 elif coord == snake['head']: # and snake['length'] >= my_snake['length']:
                                     print(f"Bumping heads with {snake['name']} at step {explore_step} {explore_edge}")
+                                    if snake['length'] >= my_snake['length']:
+                                        collision_threats.append(snake['id'])
+                                    elif snake['id'] not in collision_targets:
+                                        collision_targets[snake['id']] = explore_step
                                     unexplored = [coord for coord in explore_edge if coord not in all_coords]
                                     print(f"safe: {safe} {next_explore}")
-                                    if explore_step > 2 and (len(explore_edge) == 1 or len(next_explore) <= 1):
+                                    if explore_step > 2 and (len(explore_edge) == 1 or len(next_explore) <= 1) and not guess in choke_moves.keys():
                                         print(f"{guess} leads to a possible choke point")
-                                        choke_moves.append(guess)
+                                        choke_moves[guess] = explore_step
 
                     self_collide = [coord for coord in get_all_moves(explore) if not avoid_snakes(coord, [my_snake])]
                     if self_collide:
@@ -307,8 +327,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
 
     for path in safe_coords.keys():
         guess_coord = get_next(body[0], path)
-        print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
-        print(f"{safe_coords[path]}")
+        #print(f'considering {path}, {len(safe_coords[path])} safe coords, {len(body)} body length, consumption {avoid_consumption(guess_coord, board["snakes"], my_snake)} hazards {avoid_hazards(guess_coord, board["hazards"])}')
+        #print(f"{safe_coords[path]}")
         # TODO: also consider tails that are overlapping bodies, but more than 1 step awa#y
         if ((len(safe_coords[path]) >= len(body) or 
                 any(snake["body"][-1] in safe_coords[path] for snake in board["snakes"])) and 
@@ -316,9 +336,6 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 avoid_hazards(guess_coord, board["hazards"])
             ):
             smart_moves.append(path)
-
-    if choke_moves and smart_moves:
-        smart_moves = [move for move in smart_moves if move not in choke_moves]
     
     # check if other snakes are being forced to move into a square we can occupy.  
     # We don't need to determine if this is a safe move since we can use the freed-up
@@ -343,6 +360,29 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         if move in smart_moves and coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0 and not at_wall(coord, board) and len(safe_coords[move]) > my_snake['length']:
                             print(f'Trying to eat {snake["name"]} by going {move}')
                             eating_snakes.append(move)
+        elif snake['id'] in collision_targets:
+            collisions = {}
+            min_turns = collision_targets[snake['id']] / 2
+            enemy_possible_positions = get_future_head_positions(snake['body'], min_turns, board)
+            for move, coord in next_coords.items():
+                move_targets = get_future_head_positions([coord], min_turns - 1, board)
+                collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
+            best_approach = max(collisions, key= lambda x: len(collisions[x]))
+            if best_approach in smart_moves and len(collisions[best_approach]) > 1:
+                print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
+                print(f'{choke_moves}')
+                eating_snakes.append(best_approach)
+
+
+    if choke_moves and smart_moves and len(smart_moves) > 1:
+        print(f"choke avoid: {smart_moves}")
+        # if it's more than half our body away, we can turn around before we get cut off
+        # subtract two because both snakes could move closer together
+        temp_chokes = [move for move in choke_moves.keys() if choke_moves[move] - 2 < my_snake['length'] / 2]
+        temp_moves = [move for move in smart_moves if move not in temp_chokes]
+        if temp_moves:
+            smart_moves = temp_moves
+            print(f"Avoiding choke moves: {choke_moves}, now considering {smart_moves}")
 
     if not smart_moves and my_snake['head'] not in board['hazards']:
         # What if we try to chase our tail
@@ -425,7 +465,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     # Try to push enemy into wall, hopefully corner
                     eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
                     print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
-                else:
+                elif any(snake['id'] in collision_threats for snake in enemy_threats):
+                    print(f"enemy threats: {enemy_threats}")
                     if len(smart_moves) > 1:
                         smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
                         print(f'choosing {smart_moves} to avoid heads {head_distance}')
