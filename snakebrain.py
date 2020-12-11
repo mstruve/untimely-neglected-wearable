@@ -252,6 +252,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
     head_distance = {}
     next_coords = {}
     choke_moves = {}
+    squeeze_offset = {}
     collision_threats = []
     collision_targets = {}
 
@@ -276,10 +277,13 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         # start at 1 because snakes move forward
         explore_step = 1
         eating_offset = 0
+        squeeze_offset[guess] = 0
 
         for segments in body[:-1]:
             next_explore.clear()
             explore_step += 1
+            if len(explore_edge) == 1 and explore_step > 1:
+                squeeze_offset[guess] += 1
             print(f"Step {explore_step} exploring {explore_edge}")
             for explore in explore_edge:
                 if explore in board['food']:
@@ -353,6 +357,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 gutter_snakes.append(snake)
         elif len(enemy_options) == 2:
             # TODO: consider if this will corner us - do what-if when enemy chooses to avoid us
+            print(f'{snake["name"]} has two exits {enemy_options}')
             for enemy_move in enemy_options:
                 enemy_may = get_next(snake['body'][0], enemy_move)
                 if snake['length'] < my_snake['length'] and enemy_may in next_coords.values():
@@ -360,25 +365,39 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         if move in smart_moves and coord == enemy_may and len(get_safe_moves(all_moves, [coord], board)) > 0 and not at_wall(coord, board) and len(safe_coords[move]) > my_snake['length']:
                             print(f'Trying to eat {snake["name"]} by going {move}')
                             eating_snakes.append(move)
-        elif snake['id'] in collision_targets:
+        if not eating_snakes and snake['id'] in collision_targets:
+            print(f'{snake["name"]} could be def-eated, they are {collision_targets[snake["id"]]} away')
             collisions = {}
             min_turns = collision_targets[snake['id']] / 2
-            enemy_possible_positions = get_future_head_positions(snake['body'], min_turns, board)
-            for move, coord in next_coords.items():
-                move_targets = get_future_head_positions([coord], min_turns - 1, board)
-                collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
-            best_approach = max(collisions, key= lambda x: len(collisions[x]))
-            if best_approach in smart_moves and len(collisions[best_approach]) > 1:
-                print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
-                print(f'{choke_moves}')
-                eating_snakes.append(best_approach)
+            if min_turns <= 4:
+                enemy_possible_positions = get_future_head_positions(snake['body'], min_turns, board)
+                for move, coord in next_coords.items():
+                    move_targets = get_future_head_positions([coord], min_turns - 1, board)
+                    collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
+                print(f'collisions: {collisions}')
+                best_approach = max(collisions, key= lambda x: len(collisions[x]))
+                if best_approach in smart_moves:
+                    if len(collisions[best_approach]) > 1:
+                        print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
+                        eating_snakes.append(best_approach)
+                    elif len(collisions[best_approach]) == 1:
+                        if min_turns > 1:
+                            print(f'avoiding {snake["name"]}')
+                            choke_moves[best_approach] = min_turns
+                        elif best_approach not in choke_moves.keys():
+                            print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide')
+                            eating_snakes.append(best_approach)
+
+                
 
 
     if choke_moves and smart_moves and len(smart_moves) > 1:
-        print(f"choke avoid: {smart_moves}")
+        print(f"choke avoid smart: {smart_moves}")
+        print(f"choke avoid choke: {choke_moves}")
+        print(f"choke avoid squeeze: {squeeze_offset}")
         # if it's more than half our body away, we can turn around before we get cut off
         # subtract two because both snakes could move closer together
-        temp_chokes = [move for move in choke_moves.keys() if choke_moves[move] - 2 < my_snake['length'] / 2]
+        temp_chokes = [move for move in choke_moves.keys() if choke_moves[move] - squeeze_offset[move] < my_snake['length'] / 2]
         temp_moves = [move for move in smart_moves if move not in temp_chokes]
         if temp_moves:
             smart_moves = temp_moves
