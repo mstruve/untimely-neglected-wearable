@@ -228,6 +228,7 @@ def continue_draft(moves, my_snake, other_snake):
     return [move for move in moves if move in retval]
 
 def get_excluded_path(path, moves, origin):
+    # return cells that are accessible from the origin cell towards the moves presented
     retval = []
     for coord in path:
         # is this coordinate in the safe zone?
@@ -394,6 +395,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
                 print(f'collisions: {collisions}')
                 best_approach = max(collisions, key= lambda x: len(collisions[x]))
+                available_space = get_excluded_path(safe_coords[best_approach], [best_approach], snake['head'])
                 if best_approach in smart_moves:
                     if len(collisions[best_approach]) > 1:
                         print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
@@ -402,8 +404,8 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                         if min_turns > 1:
                             print(f'avoiding {snake["name"]}')
                             choke_moves[best_approach] = min_turns
-                        elif best_approach not in choke_moves.keys():
-                            print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide')
+                        elif best_approach not in choke_moves.keys() and len(available_space) >= my_snake['length']:
+                            print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide.  fleeing means I squeeze into {len(available_space)} cells')
                             eating_snakes.append(best_approach)
 
                 
