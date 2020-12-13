@@ -228,30 +228,29 @@ def continue_draft(moves, my_snake, other_snake):
     return [move for move in moves if move in retval]
 
 def get_excluded_path(path, moves, origin):
-    # return cells that are accessible from the origin cell towards the moves presented
+    # return cells that are blocked if a snake at the origin moves in any of the specified directions
     retval = []
-    print(f"Excluding {moves} from {path} origin {origin}")
     for coord in path:
-        # is this coordinate in the safe zone?
+        # is this coordinate not blocked by the other movement?
         if "up" in moves and coord['y'] < origin['y']:
             retval.append(coord)
-        elif "down" in moves and coord['y'] > origin['y']:
+        if "down" in moves and coord['y'] > origin['y'] and coord not in retval:
             retval.append(coord)
-        elif "right" in moves and coord['x'] < origin['x']:
+        if "right" in moves and coord['x'] < origin['x'] and coord not in retval:
             retval.append(coord)
-        elif "left" in moves and coord['x'] > origin['x']:
+        if "left" in moves and coord['x'] > origin['x'] and coord not in retval:
             retval.append(coord)
-    print(f"Final path {retval}")
     return retval
 
 def retrace_path(path, origin):
+    # Ensure that we have a contiguous path through a set of cells
     retval = []
     next_moves = [move for move in get_all_moves(origin) if move in path]
     while next_moves:
         step = []
         for coord in next_moves:
             retval.append(coord)
-            step = [move for move in get_all_moves(coord) if move in path and move not in step and move not in retval]
+            step += [move for move in get_all_moves(coord) if move in path and move not in step and move not in retval]
         next_moves = step
     return retval
 
@@ -432,9 +431,9 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             my_best = [coord for coord in my_possible_positions if coord not in enemy_possible_positions]
             shared = [coord for coord in my_possible_positions if coord in enemy_possible_positions]
             exclusion_zone = [move for move in get_safe_moves(all_moves, my_snake['body'], board) if move != get_reverse(smart_moves[0])]
-            available_space = get_excluded_path(safe_coords[smart_moves[0]], exclusion_zone, enemy_snake['head'])
+            available_space = retrace_path(get_excluded_path(safe_coords[smart_moves[0]], exclusion_zone, enemy_snake['head']), get_next(my_snake['head'], smart_moves[0]))
             print(f"safe space: {len(safe_coords[smart_moves[0]])} available_space: {len(available_space)} exclusion zone: {exclusion_zone}")
-            if len(shared) > 1 and len(my_best) == 1 and len(available_space) < my_snake['length'] and my_best[0] == get_next(my_snake['head'], smart_moves[0]):
+            if len(shared) > 1 and len(my_best) == 1 and len(available_space) < my_snake['length'] and my_snake['body'][-1] not in available_space and my_best[0] == get_next(my_snake['head'], smart_moves[0]):
                 print("run away!!")
                 smart_moves = [get_reverse(smart_moves[0])]
 
