@@ -254,6 +254,17 @@ def retrace_path(path, origin):
         next_moves = step
     return retval
 
+def get_moves_toward(start_coord, end_coord):
+    retval = []
+    if end_coord['x'] > start_coord['x']:
+        retval.append('right')
+    if end_coord['x'] < start_coord['x']:
+        retval.append('left')
+    if end_coord['y'] > start_coord['y']:
+        retval.append('up')
+    if end_coord['y'] < start_coord['y']:
+        retval.append('down')
+    return retval
 
 def get_smart_moves(possible_moves, body, board, my_snake):
     # the main function of the snake - choose the best move based on the information available
@@ -402,6 +413,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             print(f'{snake["name"]} could be def-eated, they are {collision_targets[snake["id"]]} away')
             collisions = {}
             min_turns = collision_targets[snake['id']] / 2
+            steps_towards_enemy = get_moves_toward(my_snake['head'], snake['head'])
             if min_turns <= 4:
                 enemy_possible_positions = get_future_head_positions(snake['body'], min_turns, board)
                 for move, coord in next_coords.items():
@@ -409,7 +421,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
                 print(f'collisions: {collisions}')
                 best_approach = max(collisions, key= lambda x: len(collisions[x]))
-                available_space = retrace_path(get_excluded_path(safe_coords[best_approach], [best_approach], snake['head']), get_next(my_snake['head'], best_approach))
+                available_space = retrace_path(get_excluded_path(safe_coords[best_approach], steps_towards_enemy, snake['head']), get_next(my_snake['head'], best_approach))
                 
                 if best_approach in smart_moves:
                     if len(collisions[best_approach]) > 1:
@@ -418,6 +430,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     elif len(collisions[best_approach]) == 1:
                         if min_turns > 1 or len(available_space) < my_snake['length']:
                             print(f'avoiding collision with {snake["name"]}')
+                            print(f'{available_space}')
                             choke_moves[best_approach] = min_turns
                         elif best_approach not in choke_moves.keys():
                             print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide.  fleeing means I squeeze into {len(available_space)} cells')
