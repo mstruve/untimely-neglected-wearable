@@ -230,6 +230,7 @@ def continue_draft(moves, my_snake, other_snake):
 def get_excluded_path(path, moves, origin):
     # return cells that are accessible from the origin cell towards the moves presented
     retval = []
+    print(f"Excluding {moves} from {path} origin {origin}")
     for coord in path:
         # is this coordinate in the safe zone?
         if "up" in moves and coord['y'] < origin['y']:
@@ -240,7 +241,20 @@ def get_excluded_path(path, moves, origin):
             retval.append(coord)
         elif "left" in moves and coord['x'] > origin['x']:
             retval.append(coord)
+    print(f"Final path {retval}")
     return retval
+
+def retrace_path(path, origin):
+    retval = []
+    next_moves = [move for move in get_all_moves(origin) if move in path]
+    while next_moves:
+        step = []
+        for coord in next_moves:
+            retval.append(coord)
+            step = [move for move in get_all_moves(coord) if move in path and move not in step and move not in retval]
+        next_moves = step
+    return retval
+
 
 def get_smart_moves(possible_moves, body, board, my_snake):
     # the main function of the snake - choose the best move based on the information available
@@ -358,6 +372,7 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 avoid_consumption(guess_coord, board["snakes"], my_snake) and
                 avoid_hazards(guess_coord, board["hazards"])
             ):
+            print(f"{path} is a first choice smart move")
             smart_moves.append(path)
     
     # check if other snakes are being forced to move into a square we can occupy.  
@@ -395,19 +410,19 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
                 print(f'collisions: {collisions}')
                 best_approach = max(collisions, key= lambda x: len(collisions[x]))
-                available_space = get_excluded_path(safe_coords[best_approach], [best_approach], snake['head'])
+                available_space = retrace_path(get_excluded_path(safe_coords[best_approach], [best_approach], snake['head']), get_next(my_snake['head'], best_approach))
+                
                 if best_approach in smart_moves:
                     if len(collisions[best_approach]) > 1:
                         print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
                         eating_snakes.append(best_approach)
                     elif len(collisions[best_approach]) == 1:
-                        if min_turns > 1:
-                            print(f'avoiding {snake["name"]}')
+                        if min_turns > 1 or len(available_space) < my_snake['length']:
+                            print(f'avoiding collision with {snake["name"]}')
                             choke_moves[best_approach] = min_turns
-                        elif best_approach not in choke_moves.keys() and len(available_space) >= my_snake['length']:
+                        elif best_approach not in choke_moves.keys():
                             print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide.  fleeing means I squeeze into {len(available_space)} cells')
                             eating_snakes.append(best_approach)
-
                 
     # reverse course in one special case
     if len(smart_moves) == 1 and collision_threats:
