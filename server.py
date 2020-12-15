@@ -30,9 +30,9 @@ class Battlesnake(object):
         return {
             "apiversion": "1",
             "author": "altersaddle",  
-            "color": "#306448",  # TODO: create function to generate
-            "head": "tongue",  # TODO: Personalize
-            "tail": "sharp",  # TODO: Personalize
+            "color": "#739071",  # TODO: create function to generate
+            "head": "dead",  # TODO: Personalize
+            "tail": "shac-coffee",  # TODO: Personalize
         }
 
     @cherrypy.expose
