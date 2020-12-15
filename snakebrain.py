@@ -182,6 +182,9 @@ def steps_to_safety(direction, start, board):
 def at_wall(coord, board):
     return coord["x"] == 0 or coord["y"] == 0 or coord["x"] == board["width"] - 1 or coord["y"] == board["height"] - 1
 
+def first_three_segments_straight(body):
+    return body[0]['x'] == body[2]['x'] or body[0]['y'] == body[2]['y']
+
 def avoid_crowd(moves, enemy_snakes, my_snake):
     crowd_cost = {}
     
@@ -255,6 +258,7 @@ def retrace_path(path, origin):
     return retval
 
 def get_moves_toward(start_coord, end_coord):
+    """ Return an array of snake moves that will direct something at start_coord towards end_coord. """
     retval = []
     if end_coord['x'] > start_coord['x']:
         retval.append('right')
@@ -448,7 +452,10 @@ def get_smart_moves(possible_moves, body, board, my_snake):
             print(f"safe space: {len(safe_coords[smart_moves[0]])} available_space: {len(available_space)} exclusion zone: {exclusion_zone}")
             if len(shared) > 1 and len(my_best) == 1 and len(available_space) < my_snake['length'] and my_snake['body'][-1] not in available_space and my_best[0] == get_next(my_snake['head'], smart_moves[0]):
                 print("run away!!")
-                smart_moves = [get_reverse(smart_moves[0])]
+                flee = get_reverse(smart_moves[0])
+                if flee in safe_coords.keys() and (len(safe_coords[flee]) >= my_snake['length'] or any(snake['body'][:-1] in safe_coords[flee] for snake in board['snakes'])):
+                    print(f'going {flee}!')
+                    smart_moves = [flee]
 
 
 
@@ -597,13 +604,15 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     print(f"safe food towards {path} is {closest_food_distance} or less")
                     closest_food.append(path)
                     # see if we're the closest to the food
-                    #if head_distance.get(path) and food_moves[path] < head_distance[path]:
+                    minimum_moves_threshold = 4
+                    if not first_three_segments_straight(my_snake['body']):
+                        minimum_moves_threshold = 6
                     for food in food_targets:
                         test_coord = get_next(my_snake["head"], path)
                         distance_to_me = get_minimum_moves(food, [test_coord])
                         if distance_to_me == food_moves[path]:
                             for snake in food_considerations:
-                                if get_minimum_moves(food, [snake["head"]]) <= distance_to_me + 1 and get_minimum_moves(snake["head"], [test_coord]) <= 3 and snake["length"] > my_snake["length"]:
+                                if get_minimum_moves(food, [snake["head"]]) <= distance_to_me + 1 and get_minimum_moves(snake["head"], [test_coord]) < minimum_moves_threshold and snake["length"] > my_snake["length"]:
                                     # Don't
                                     print(f'Avoiding food towards {path} because {snake["name"]} is {get_minimum_moves(snake["head"], [test_coord])} away')
                                     avoid_moves.append(path)
