@@ -425,20 +425,25 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                     collisions[move] = [coord for coord in move_targets if coord in enemy_possible_positions]
                 print(f'collisions: {collisions}')
                 best_approach = max(collisions, key= lambda x: len(collisions[x]))
+                most_hits = max(len(collisions[x]) for x in collisions.keys())
+                all_attack_moves = [x for x in collisions.keys() if len(collisions[x]) == most_hits]
+                if len(all_attack_moves) > 1:
+                    enemy_options = get_safe_moves(all_moves, snake['body'], board)
+                    print(f"we go {all_attack_moves} they go {enemy_options}")
+                    no_run = [move for move in all_attack_moves if move not in enemy_options]
+                    if len(no_run) == 1:
+                        best_approach = no_run[0]
+
                 available_space = retrace_path(get_excluded_path(safe_coords[best_approach], steps_towards_enemy, snake['head']), get_next(my_snake['head'], best_approach))
                 
                 if best_approach in smart_moves:
-                    if len(collisions[best_approach]) > 1:
-                        print(f'attacking {snake["name"]} by going {best_approach}, {min_turns} turns to collide')
+                    if min_turns > 1 or (len(available_space) < my_snake['length'] and my_snake['body'][-1] not in available_space):
+                        print(f'avoiding collision with {snake["name"]}')
+                        print(f'{available_space}')
+                        choke_moves[best_approach] = min_turns
+                    elif best_approach not in choke_moves.keys():
+                        print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide.  fleeing means I squeeze into {len(available_space)} cells')
                         eating_snakes.append(best_approach)
-                    elif len(collisions[best_approach]) == 1:
-                        if min_turns > 1 or len(available_space) < my_snake['length']:
-                            print(f'avoiding collision with {snake["name"]}')
-                            print(f'{available_space}')
-                            choke_moves[best_approach] = min_turns
-                        elif best_approach not in choke_moves.keys():
-                            print(f'attacking {snake["name"]} by going {best_approach}, next turn to collide.  fleeing means I squeeze into {len(available_space)} cells')
-                            eating_snakes.append(best_approach)
                 
     # reverse course in one special case
     if len(smart_moves) == 1 and collision_threats:
@@ -529,47 +534,6 @@ def get_smart_moves(possible_moves, body, board, my_snake):
                 print(f'squeezing into {squeeze_move} {safe_coords}')
                 smart_moves.append(squeeze_move)
 
-    # tiebreakers when there are two paths, three in squads.  Skip if begin of game and we're short
-    # TODO: add alternate branch if we're beside food and that food would make us larger than nearest threat
-    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and my_snake['length'] > 3:
-        body_weight = {}
-        for move in smart_moves:
-            next_coord = get_next(body[0], move)
-            head_distance[move] = get_closest_enemy_head_distance(next_coord, [snake for snake in enemy_snakes if snake['length'] >= my_snake['length']])
-            body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
-
-        if min(head_distance.values()) <= 3:
-            if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
-                if board["hazards"]:
-                    hazard_avoid = [move for move in smart_moves if not any(coord in board["hazards"] for coord in safe_coords[move])]
-                    if hazard_avoid:
-                        smart_moves = hazard_avoid
-                        print(f'avoiding hazards {hazard_avoid}')
-                if len(smart_moves) > 1:
-                    smart_moves = avoid_crowd(smart_moves, enemy_snakes, my_snake)
-            else:
-                enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in other_snakes if snake['length'] > my_snake['length']])
-                if len(enemy_threats) == 1 and is_drafting(my_snake, enemy_threats[0]):
-                    # Try to push enemy into wall, hopefully corner
-                    eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
-                    print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
-                elif any(snake['id'] in collision_threats for snake in enemy_threats):
-                    print(f"enemy threats: {enemy_threats}")
-                    if len(smart_moves) > 1:
-                        smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
-                        print(f'choosing {smart_moves} to avoid heads {head_distance}')
-                    if len(smart_moves) > 1 and at_wall(my_snake["head"], board):
-                        smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
-                        print(f'choosing {smart_moves} to bump self off wall')
-                    if len(smart_moves) > 1:
-                        escape_plan = {}
-                        for move in smart_moves:
-                            escape_plan[move] = len(get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board))
-                        smart_moves = [move for move in escape_plan.keys() if escape_plan[move] == max(escape_plan.values())]
-                        print(f'choosing {smart_moves} because there are {max(escape_plan.values())} ways out')
-                    if len(smart_moves) > 1:
-                        smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
-                        print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
 
     # Seek food if there are other snakes porentially larger than us, or if health is low
@@ -676,6 +640,48 @@ def get_smart_moves(possible_moves, body, board, my_snake):
         smart_moves = eating_snakes
     elif food_avoid:
         smart_moves = food_avoid
+
+    # tiebreakers when there are two paths, three in squads.  Skip if begin of game and we're short
+    # TODO: add alternate branch if we're beside food and that food would make us larger than nearest threat
+    if not eating_snakes and len(board['snakes']) > 1 and should_choose(smart_moves, my_snake.get("squad")) and my_snake['length'] > 3:
+        body_weight = {}
+        for move in smart_moves:
+            next_coord = get_next(body[0], move)
+            head_distance[move] = get_closest_enemy_head_distance(next_coord, [snake for snake in enemy_snakes if snake['length'] >= my_snake['length']])
+            body_weight[move] = get_body_segment_count(next_coord, move, board['snakes'])
+
+        if min(head_distance.values()) <= 3:
+            if at_wall(my_snake["head"], board) and not at_wall(my_snake["body"][1], board):
+                if board["hazards"]:
+                    hazard_avoid = [move for move in smart_moves if not any(coord in board["hazards"] for coord in safe_coords[move])]
+                    if hazard_avoid:
+                        smart_moves = hazard_avoid
+                        print(f'avoiding hazards {hazard_avoid}')
+                if len(smart_moves) > 1:
+                    smart_moves = avoid_crowd(smart_moves, enemy_snakes, my_snake)
+            else:
+                enemy_threats = get_closest_enemy(my_snake["head"], [snake for snake in other_snakes if snake['length'] > my_snake['length']])
+                if len(enemy_threats) == 1 and is_drafting(my_snake, enemy_threats[0]):
+                    # Try to push enemy into wall, hopefully corner
+                    eating_snakes = continue_draft(smart_moves, my_snake, enemy_threats[0])
+                    print(f'Drafting {enemy_threats[0]["name"]} {smart_moves}')
+                elif any(snake['id'] in collision_threats for snake in enemy_threats):
+                    print(f"enemy threats: {enemy_threats}")
+                    if len(smart_moves) > 1:
+                        smart_moves = [move for move in smart_moves if head_distance[move] == max(head_distance.values())]
+                        print(f'choosing {smart_moves} to avoid heads {head_distance}')
+                    if len(smart_moves) > 1 and at_wall(my_snake["head"], board):
+                        smart_moves = [move for move in smart_moves if not at_wall(get_next(body[0], move), board)]
+                        print(f'choosing {smart_moves} to bump self off wall')
+                    if len(smart_moves) > 1:
+                        escape_plan = {}
+                        for move in smart_moves:
+                            escape_plan[move] = len(get_safe_moves(all_moves, [get_next(my_snake['head'], move)], board))
+                        smart_moves = [move for move in escape_plan.keys() if escape_plan[move] == max(escape_plan.values())]
+                        print(f'choosing {smart_moves} because there are {max(escape_plan.values())} ways out')
+                    if len(smart_moves) > 1:
+                        smart_moves = [move for move in smart_moves if body_weight[move] == min(body_weight.values())]
+                        print(f'choosing {smart_moves} to avoid bodies {body_weight}')
 
 
     return smart_moves
